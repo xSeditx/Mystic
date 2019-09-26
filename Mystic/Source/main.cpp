@@ -458,7 +458,8 @@ public:
 // TestSprite->Render(*SpriteShader);
 // SpriteShader->Disable();
 	}
-	/// OK... is it working now....
+	//
+	///OK... is it working now....
 
 
     float Angle = 0; /// Just a variable to move the Lighting around and not terribly important
