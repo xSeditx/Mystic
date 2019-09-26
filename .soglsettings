@@ -1,0 +1,4 @@
+output C:\Users\DELL\source\repos\Mystic\
+language C++11
+debugging true
+platforms win32 linux macos
