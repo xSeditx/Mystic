@@ -17,7 +17,6 @@ Mesh::Mesh(std::string file)
 	Filepath(file),
 	MaterialID(NULL)
 {
-
 	__debugbreak();
 }
  

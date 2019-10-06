@@ -63,17 +63,21 @@ Camera3D::Camera3D(Vec3 position, Vec3 rotation)
 // GameObject API INTERFACE FUNCTIONS
 void Camera3D::Bind()
 {
- //	Shader::GetActiveShader()->ProjectionMatrix.Set(ProjectionMatrix);
- //	Shader::GetActiveShader()->ViewMatrix.Set(ViewMatrix);
+#ifdef _NO_UBO_
+ 	Shader::GetActiveShader()->ProjectionMatrix.Set(ProjectionMatrix);
+ 	Shader::GetActiveShader()->ViewMatrix.Set(ViewMatrix);
 	__debugbreak();
 	//uniform_ProjectionMatrix.Set(ProjectionMatrix);
 	//uniform_ViewMatrix.Set(ViewMatrix);
+#endif
 }
 void Camera3D::Bind(Shader *_shader)
 {
-//	_shader->SetUniform("EyePosition", Position);
-//	_shader->SetUniform("ProjectionMatrix", ProjectionMatrix);
-// 	_shader->SetUniform("ViewMatrix", ViewMatrix);
+#ifdef _NO_UBO_
+	_shader->SetUniform("EyePosition", Position);
+	_shader->SetUniform("ProjectionMatrix", ProjectionMatrix);
+ 	_shader->SetUniform("ViewMatrix", ViewMatrix);
+#endif
 }
 
 void Camera3D::Unbind()

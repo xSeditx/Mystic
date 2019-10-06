@@ -6,14 +6,12 @@
 
 Texture::Texture(std::string file)
 	:
-//	Asset(file),
 	Type(0)
 {
 	TextureID = SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 }
 Texture::Texture(Image &image)
 	:
-//	Asset("Texture" + std::to_string(ElementCount)),
 	Picture(&image),
 	Type(0),
 	TextureID(0),
@@ -23,7 +21,6 @@ Texture::Texture(Image &image)
     Load();
 }
 Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
-
 {// Generate a Texture from a Sub image 
     Picture = new Image();
     *Picture = Image::FlippedImage(image);
@@ -93,45 +90,6 @@ Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
     delete (TempImage);
     Unbind();
 }
-
-
-
-//glGetTextureSubImage
-//(
-//   GL_TEXTURE_2D,
-//   NULL,
-//   _x, _y,
-//   NULL,
-//   _width, _height,
-//   1,
-//   tex.Format, GL_UNSIGNED_BYTE,
-//   DestByteHeight * DestByteWidth,
-//   TempImage
-//);
-//Picture = new Image(TempImage, Vec2(_width, _height), image.Channels);
-
-
-
-
-//==============================================================================================================================================================================
-// FLIP THE IMAGE TO PLAY NICE WITH OPENGL
-//==============================================================================================================================================================================
-//{
-//    unsigned char *Data = new unsigned char[image.DataSize];
-//    size_t RowSize = image.Size.x * sizeof(unsigned char) * image.Channels;
-//    size_t ImageSize = RowSize * image.Size.y;
-//
-//    unsigned char *TempImage = new unsigned char[ImageSize] {0};
-//
-//    for_loop(I, image.Size.y)
-//    {
-//        memcpy(TempImage + ((size_t)I * RowSize), (Data + (ImageSize - (((size_t)I + 1) * RowSize))), RowSize);// Copy bottom row into top of Temp buffer
-//    }
-//
-//    memcpy(Data, TempImage, ImageSize);
-//    delete[](TempImage);
-//}
-//==============================================================================================================================================================================
 
 
 bool Texture::Load()
@@ -313,52 +271,6 @@ void Cubemap::Create(Image *xpos, Image *xneg, Image *ypos, Image *yneg, Image *
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, yneg->Size.x, yneg->Size.y, 0, yneg->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, yneg->Data);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, zpos->Size.x, zpos->Size.y, 0, zpos->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zpos->Data);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, zneg->Size.x, zneg->Size.y, 0, zneg->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zneg->Data);
-//  Vec3 Vertices[] = 
-//  {
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  	Vec3( -1.0f, -1.0f, -1.0f),
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  	Vec3(  1.0f,  1.0f, -1.0f),
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  	Vec3( -1.0f, -1.0f, -1.0f),
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  	Vec3( -1.0f,  1.0f,  1.0f),
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  	Vec3(  1.0f, -1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f, -1.0f),
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  	Vec3( -1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f, -1.0f,  1.0f),
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  	Vec3(  1.0f,  1.0f, -1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3(  1.0f,  1.0f,  1.0f),
-//  	Vec3( -1.0f,  1.0f,  1.0f),
-//  	Vec3( -1.0f,  1.0f, -1.0f),
-//  
-//  	Vec3( -1.0f, -1.0f, -1.0f),
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  	Vec3(  1.0f, -1.0f, -1.0f),
-//  	Vec3( -1.0f, -1.0f,  1.0f),
-//  	Vec3(  1.0f, -1.0f,  1.0f)
-//  };
-//  
-//  VAO.Attach(VERTEX, new VertexBufferObject<Vec3>(&Vertices[0], 32));
 
 	CompileShader();
 	CreateCube();
@@ -464,7 +376,92 @@ void Cubemap::CreateCube()
 
 
 
+/// CUBEMAP
+//  Vec3 Vertices[] = 
+//  {
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  	Vec3( -1.0f, -1.0f, -1.0f),
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  	Vec3(  1.0f,  1.0f, -1.0f),
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  	Vec3( -1.0f, -1.0f, -1.0f),
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  	Vec3( -1.0f,  1.0f,  1.0f),
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  	Vec3(  1.0f, -1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f, -1.0f),
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  	Vec3( -1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f, -1.0f,  1.0f),
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  	Vec3(  1.0f,  1.0f, -1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3(  1.0f,  1.0f,  1.0f),
+//  	Vec3( -1.0f,  1.0f,  1.0f),
+//  	Vec3( -1.0f,  1.0f, -1.0f),
+//  
+//  	Vec3( -1.0f, -1.0f, -1.0f),
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  	Vec3(  1.0f, -1.0f, -1.0f),
+//  	Vec3( -1.0f, -1.0f,  1.0f),
+//  	Vec3(  1.0f, -1.0f,  1.0f)
+//  };
+//  
+//  VAO.Attach(VERTEX, new VertexBufferObject<Vec3>(&Vertices[0], 32));
 
+
+
+//glGetTextureSubImage
+//(
+//   GL_TEXTURE_2D,
+//   NULL,
+//   _x, _y,
+//   NULL,
+//   _width, _height,
+//   1,
+//   tex.Format, GL_UNSIGNED_BYTE,
+//   DestByteHeight * DestByteWidth,
+//   TempImage
+//);
+//Picture = new Image(TempImage, Vec2(_width, _height), image.Channels);
+
+
+
+
+//==============================================================================================================================================================================
+// FLIP THE IMAGE TO PLAY NICE WITH OPENGL
+//==============================================================================================================================================================================
+//{
+//    unsigned char *Data = new unsigned char[image.DataSize];
+//    size_t RowSize = image.Size.x * sizeof(unsigned char) * image.Channels;
+//    size_t ImageSize = RowSize * image.Size.y;
+//
+//    unsigned char *TempImage = new unsigned char[ImageSize] {0};
+//
+//    for_loop(I, image.Size.y)
+//    {
+//        memcpy(TempImage + ((size_t)I * RowSize), (Data + (ImageSize - (((size_t)I + 1) * RowSize))), RowSize);// Copy bottom row into top of Temp buffer
+//    }
+//
+//    memcpy(Data, TempImage, ImageSize);
+//    delete[](TempImage);
+//}
+//==============================================================================================================================================================================
 
 
 // Dragon model

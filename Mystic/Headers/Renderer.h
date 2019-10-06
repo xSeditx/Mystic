@@ -7,11 +7,11 @@
 #include"Mesh.h"
 
 #include"Assimp.h"
-
-#include"ECSsystem.h"
-#include"ECScomponent.h"
-#include"ECS.h"
-
+//
+//#include"ECSsystem.h"
+//#include"ECScomponent.h"
+//#include"ECS.h"
+//
 ///Layered rendering
 /*
 Also known as bucketized rendering, the idea here is to assign a key to a draw call which is then used for sorting.
@@ -43,66 +43,48 @@ class Shader;
 // const IndirectArrayBuffer *cmd = (const IndirectArrayBuffer *) Indirect;
 // glDrawArraysInstancedBaseInstance(mode, cmd->first,cmd->count, cmd->instanceCount, cmd->baseInstance);
 class Renderer;
-
-COMPONENT(TransformComponent)
-{
-  Vec3 
-      Position,
-      Rotation,
-      Scale;
-  Mat4 Transform;
-};
-COMPONENT(RenderableComponent)
-{
-  VertexArrayObject *VAO;
-  Material *MeshSurface;
-};
-
-struct RenderSystem : public BaseSystem
-{
-  RenderSystem()
-      :
-      BaseSystem()
-  {
-      AddComponentType(TransformComponent::ID);
-      AddComponentType(RenderableComponent::ID);
-      #ifdef _DEBUG
-              SystemName = (typeid(this).name());
-      #endif
-  }
-  virtual void UpdateComponents(float delta, BaseComponent** components)
-  {
-      TransformComponent* transform = (TransformComponent*)components[0];
-      RenderableComponent* mesh = (RenderableComponent*)components[1];
-    //  Context->Submit(mesh->VAO, mesh->MeshSurface);
-  }
-
-private:
-  Renderer *Context;
-};
-
+//   
+//   COMPONENT(TransformComponent)
+//   {
+//     Vec3 
+//         Position,
+//         Rotation,
+//         Scale;
+//     Mat4 Transform;
+//   };
+//   COMPONENT(RenderableComponent)
+//   {
+//     VertexArrayObject *VAO;
+//     Material *MeshSurface;
+//   };
+//   
+//   struct RenderSystem : public BaseSystem
+//   {
+//     RenderSystem()
+//         :
+//         BaseSystem()
+//     {
+//         AddComponentType(TransformComponent::ID);
+//         AddComponentType(RenderableComponent::ID);
+//         #ifdef _DEBUG
+//                 SystemName = (typeid(this).name());
+//         #endif
+//     }
+//     virtual void UpdateComponents(float delta, BaseComponent** components)
+//     {
+//         TransformComponent* transform = (TransformComponent*)components[0];
+//         RenderableComponent* mesh = (RenderableComponent*)components[1];
+//       //  Context->Submit(mesh->VAO, mesh->MeshSurface);
+//     }
+//   
+//   private:
+//     Renderer *Context;
+//   };
+//   
 //
 //
 
 //
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 struct IndirectArrayBuffer
@@ -126,8 +108,6 @@ struct IndirectArrayBuffer
     uint32_t  firstIndex;
     uint32_t  baseInstance;
 };
-
-
 struct Indirect
 {
     Indirect
@@ -153,9 +133,6 @@ struct Indirect
     uint32_t  baseVertex;
     uint32_t  baseInstance;
 };
-
-
-
 struct Renderable
 {// Baseclass for any renderable object inside of this engine
     Renderable

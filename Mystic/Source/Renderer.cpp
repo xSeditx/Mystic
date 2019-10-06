@@ -1,5 +1,11 @@
 #include"Renderer.h"
- 
+
+ /*
+ This entire Module sucks and needs to go.
+ Just burn it down and start anew as it should have never existed in the first place and is just the result of boredom
+ */
+
+
 Scene::Scene(std::string _file)
 	: 
 	Filepath(_file),
@@ -443,7 +449,6 @@ void Scene::Render(Shader &_shader)
 
 void Renderer::Submit(Mesh &_mesh)
 {
-
 	/// Better to glBufferData() Allocate as much as needed. Add buffer one... add buffer two.... instead of this clusterfuck
 	//TODO("This is Fucking God Awful, Fix the Attribute and VertexBufferObject classes to map properly")
 	int VertexID = 0;

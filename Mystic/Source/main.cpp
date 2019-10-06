@@ -232,11 +232,11 @@ private:
 };
 
 
-
-#include"ECS.h"
-#include"ECScomponent.h"
-#include"ECSsystem.h"
-
+//
+//#include"ECS.h"
+//#include"ECScomponent.h"
+//#include"ECSsystem.h"
+//
 class MyApp : public Application
 {
 public:
@@ -297,50 +297,50 @@ public:
 	DebugQuad *DQuad;
  
 
-    EntityComponentSystem *TestECS;
-    SystemList MainSystems;
+ //   EntityComponentSystem *TestECS;
+ //   SystemList MainSystems;
 
-    COMPONENT(MovementComponent)
-    {
-        Vec3 Velocity;
-        Vec3 Acceleration;
-    };
+  //  COMPONENT(MovementComponent)
+  //  {
+  //      Vec3 Velocity;
+  //      Vec3 Acceleration;
+  //  };
 
     
-    COMPONENT(PositionComponent) 
-    {
-        Vec3 Position;
-    };
+  //  COMPONENT(PositionComponent) 
+  //  {
+  //      Vec3 Position;
+  //  };
 
    
-    struct MovementSystem
-        :
-        public BaseSystem
-    {
-        MovementSystem()
-            :
-            BaseSystem()
-        {  
-            AddComponentType(PositionComponent::ID);
-            AddComponentType(MovementComponent::ID);
-#ifdef _DEBUG
-            SystemName = (typeid(this).name());
-#endif
-        }
+//  struct MovementSystem
+//        :
+//        public BaseSystem
+//    {
+//        MovementSystem()
+//            :
+//            BaseSystem()
+//        {  
+//            AddComponentType(PositionComponent::ID);
+//            AddComponentType(MovementComponent::ID);
+//#ifdef _DEBUG
+//            SystemName = (typeid(this).name());
+//#endif
+//        }
 
-        virtual void UpdateComponents(float _delta, BaseComponent** _components)
-        {
-            PositionComponent* Pos = (PositionComponent*)_components[0];
-            MovementComponent *Movement = (MovementComponent*)_components[1];
-            
-            Movement->Velocity += Movement->Acceleration;
-            Pos->Position += Movement->Velocity;
-            Movement->Velocity *= .9;
-        };
-    };
-    MovementSystem movementSys;
-    PositionComponent PosComponent;
-    MovementComponent TestMovementComponent;
+//        virtual void UpdateComponents(float _delta, BaseComponent** _components)
+//        {
+//            PositionComponent* Pos = (PositionComponent*)_components[0];
+//            MovementComponent *Movement = (MovementComponent*)_components[1];
+//            
+//            Movement->Velocity += Movement->Acceleration;
+//            Pos->Position += Movement->Velocity;
+//            Movement->Velocity *= .9;
+//        };
+//    };
+  //  MovementSystem movementSys;
+  //  PositionComponent PosComponent;
+  //  MovementComponent TestMovementComponent;
 
 	void OnEnd()
 	{
@@ -351,18 +351,18 @@ public:
 		TestShader = new Shader("Resources\\Shaders\\BasicShader.sfx");
         SpriteShader = new Shader("Resources\\Shaders\\Sprite.sfx");
 
-        TestECS = new EntityComponentSystem();
+     //   TestECS = new EntityComponentSystem();
 
         /// Create Entities
-        EntityPTR Entity = TestECS->MakeEntity(PosComponent, TestMovementComponent);
+ //       EntityPTR Entity = TestECS->MakeEntity(PosComponent, TestMovementComponent);
 
         /// Create Systems
 
-        MainSystems.AddSystem(movementSys);
+//        MainSystems.AddSystem(movementSys);
    //     TestECS->AddSystem(movementSys);
 
-        TestECS->AddComponent(Entity, &PosComponent);
-        TestECS->AddComponent(Entity, &TestMovementComponent);
+   //     TestECS->AddComponent(Entity, &PosComponent);
+   //     TestECS->AddComponent(Entity, &TestMovementComponent);
 
         SpriteShader->Enable();
         {
@@ -435,7 +435,7 @@ public:
                 0.0, 0.5, 0.0, 0.0,
                 0.0, 0.0, 0.5, 0.0,
                 0.5, 0.5, 0.5, 1.0
-            ) * Shadows->GetDepthMatrix();
+            ) *Shadows->GetDepthMatrix();
 
 			TestUBO->Data.EyePosition = TestCamera.Position;
 
@@ -450,7 +450,7 @@ public:
         TestShader->Disable();
 #endif
 	 	
-       // DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
+         DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
 // SpriteShader->Enable();
 // 
  TestSprite->Position = Vec3(430, 640, 0);
@@ -473,14 +473,6 @@ int main()
 	 App.End();
      NativeMemory::GlobalMemState.CheckMemory();
 }
-
-
-
-
-
-
-
-
 
 
 

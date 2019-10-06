@@ -19,6 +19,7 @@ public:
 		Transform = glm::rotate(Transform, glm::radians(Rotation.x), Vec3(1.0f, 0.0f, 0.0f));
 		Transform = glm::rotate(Transform, glm::radians(Rotation.y), Vec3(0.0f, 1.0f, 0.0f));
 		Transform = glm::rotate(Transform, glm::radians(Rotation.z), Vec3(0.0f, 0.0f, 1.0f));
+		
 	}
 	GameObject(Vec3 _pos, Vec3 _rot, Vec3 _scale)
 		:

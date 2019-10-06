@@ -183,7 +183,7 @@ void Shader::Reload()
 	std::string VertexShader;
 	std::string FragmentShader;
 
-	ShaderType Type;
+	ShaderType Type{ VERTEX };
 	std::stringstream SS[2];
 	while (std::getline(ShaderFile, Line))
 	{
