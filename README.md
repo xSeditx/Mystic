@@ -138,11 +138,11 @@ choosing.
 
 
 
-==================================================================================================================
+___ 
   6/ 9/19
-==================================================================================================================
+___ 
 * Bump Mapping
-==================================================================================================================
+___ 
 *  Implemented Bumpmapping in the Basic Shader. Fixed bug in which I had 
 been calculating the tangent from the Vertexposition instead of the damn
 tangent attribute due to a typo
@@ -153,16 +153,16 @@ tangent attribute due to a typo
 
 
 
-==================================================================================================================
+___ 
   6/ 8/19
-==================================================================================================================
+___ 
 * TODO("Make a Shader function that returns a specific Attribute Location 
 in that shader for whatever attribute type specified, do it for the active 
 shader so it is passed an buffertype Enum and returns a GLuint for the
 position");
-==================================================================================================================
+___ 
 Shader.cpp/h
-==================================================================================================================
+___ 
 
 Did that. AttributeLocation(const char *_name) now return location of given
 Attribute
@@ -173,9 +173,9 @@ Attribute
 
 
 
-==================================================================================================================
+___ 
   5/10/19
-==================================================================================================================
+___ 
 *  	TODO("Setup a Better system for the Shaders. Anything attempting to be
 Initialized that relies on them causes problems as GetActiveShader becomes 
 a nullptr")
@@ -185,9 +185,9 @@ a nullptr")
 
 
 
-==================================================================================================================
+___ 
 Shader.cpp/h
-==================================================================================================================
+___ 
 * Slightly better system being designed. Shaders, Uniforms, and anything associated
 with the GPU program will have a base class and singleton instance of its
 type accessible via various areas of the program. Is it better? Time will tell
@@ -196,13 +196,13 @@ Not exactly thrilled with this layout either
 
 
 
-==================================================================================================================
+___ 
   5/10/19
-==================================================================================================================
+___ 
 * TODO("Smooth the Camera movements");
-==================================================================================================================
+___ 
 Camera.cpp
-==================================================================================================================
+___ 
 * Sort of Fixed, make the Position and Rotation effected by Delta Time also
 LERP'ed between the Current Position and Target Position smoothing the 
 movement somewhat. All in all it has a smoother feel to it however it is 
@@ -212,14 +212,14 @@ far from ideal and more work needs to be done to it.
 
 
 
-==================================================================================================================
+___ 
   5/4/19
-==================================================================================================================
+___ 
 * TODO("FrameRate is part of the Window Structure, implement a real class for it instead of that hack");
 * TODO("FrameRate is a Hack. Fix it and Implement in the Timer.cpp");
-==================================================================================================================
+___ 
 Timer.cpp
-==================================================================================================================
+___ 
 
 * Fixed it a while ago, just now added this entry. FrameRate has been added
 as a part of the Timer classes and not an Object called FrameRate can be 
@@ -231,12 +231,12 @@ still currently working.
 
 
 
-==================================================================================================================
+___ 
   4/19/19
 * TODO("IMAGE.CPP NEED TO HAVE THE FUCKING TEXTURE COORDS Y FLIPPED!")
-==================================================================================================================
+___ 
 Image.CPP
-==================================================================================================================
+___ 
 
 * Created an Algorithm to flip the Image as desired now the loaded Images
 have the proper orientation to display the correct way using OpenGL coords
@@ -248,12 +248,12 @@ have the proper orientation to display the correct way using OpenGL coords
 
 
 
-==================================================================================================================
+___ 
   4/18/19
-==================================================================================================================
+___ 
 TODO("SOIL is returning RGBA channel when the Image does not contain Alpha.
       This causes a Crash in the Texture Loading function.");
-==================================================================================================================
+___ 
 
 * Fixed by forcing SOIL to load only the RGB channels. Might return in the future 
 to implement this properly to include the alpha channels but currently it is
@@ -263,26 +263,25 @@ not reading my Images correctly so IDK what I can do about that
 
 
 
-==================================================================================================================
+___ 
   4/17/19
-==================================================================================================================
+___ 
 
 * Created a basic Scene Loader using Assimp library
 
 
 
 
-==================================================================================================================
+___ 
   4/12/19
-==================================================================================================================
+___ 
 * Fixed up the Shader class, Implemented a Basic shader
 
 
 
 
 
-STRUCTURE
-
+__STRUCTURE
 
 CORE 0
 - Application

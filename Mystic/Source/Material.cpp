@@ -99,8 +99,7 @@ void Material::Bind(Shader *_shader)
 	//_shader->Enable();
 	if (Properties.size())
 	{
-		//Properties[$clr.specular]
-		_shader->SetUniform("SpecularPower", 32);
+		 _shader->SetUniform("SpecularPower", 32);
 		_shader->SetUniform("SpecularStrength", .5f);
 	}// SET ANY UNIFORMS FOR PROPERTIES
 
