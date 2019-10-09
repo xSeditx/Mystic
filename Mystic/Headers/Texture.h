@@ -20,14 +20,14 @@ public:
     Texture() = default;
 
 	Texture(std::string file);
-	Texture(Image &image);
-    Texture(Image &image, int x,int y, int width, int height);
+	Texture(Bitmap &_image);
+    Texture(Bitmap &_image, int x,int y, int width, int height);
 
 
 	GLuint TextureID = 0;
 	GLenum Target = GL_TEXTURE_2D;
 
-	Image *Picture;
+	Bitmap *Picture;
 
 	uint64_t Handle = 0;
 
@@ -75,10 +75,10 @@ class Cubemap : public Texture
 {
 public:
 	Cubemap();
-	Cubemap(Image *xpos, Image *xneg, Image *ypos, Image *yneg, Image *zpos, Image *zneg);
+	Cubemap(Bitmap *xpos, Bitmap *xneg, Bitmap *ypos, Bitmap *yneg, Bitmap *zpos, Bitmap *zneg);
 
 	void Update(Mat4 _p, Mat4 _m);
-	void Create(Image *xpos, Image *xneg, Image *ypos, Image *yneg, Image *zpos, Image *zneg);
+	void Create(Bitmap *xpos, Bitmap *xneg, Bitmap *ypos, Bitmap *yneg, Bitmap *zpos, Bitmap *zneg);
 	void Delete();
 	void CompileShader();
 	void CreateCube();
@@ -136,7 +136,7 @@ TextureBufferObject<T>::TextureBufferObject(std::string _name, std::vector<T> _d
 template<typename T>
 void TextureBufferObject<T>::Bind(GLuint _slot)
 {
-	UniformLocation = glGetUniformLocation(Shader::GetActiveShader()->GetName(), Name.c_str());
+	UniformLocation = glGetUniformLocation(Shader::GetActiveShader()->g_ID(), Name.c_str());
 	glUniform1i(UniformLocation, _slot);
 	glActiveTexture(GL_TEXTURE0 + _slot);
 	glBindTexture(GL_TEXTURE_BUFFER, TextureID);

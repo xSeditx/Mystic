@@ -153,6 +153,9 @@
     <ClInclude Include="Headers\Renderer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\FileIO.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -257,6 +260,9 @@
     <ClCompile Include="Source\Creature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FileIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Removed.txt">
@@ -267,6 +273,9 @@
     </Text>
     <Text Include="Resources\Progress.txt">
       <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Debug.sfx">
+      <Filter>Resource Files\Shaders</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -116,10 +116,10 @@ struct CreatureManager
 			Print("Framebuffer incomplete,missing attachment\n");
 			return false;
 		case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-			Print("Framebuffer incomplete,attached images must have same dimensions\n");
+			Print("Framebuffer incomplete,attached Images must have same dimensions\n");
 			return false;
 		case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-			Print("Framebuffer incomplete,attached images must have same format\n");
+			Print("Framebuffer incomplete,attached Images must have same format\n");
 			return false;
 		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
 			Print("Framebuffer incomplete,missing draw buffer\n");

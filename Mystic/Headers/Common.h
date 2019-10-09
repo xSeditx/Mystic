@@ -4,7 +4,7 @@
 
 // Standard Library includes
 #include<iostream>
-#undef _DEBUG
+//#undef _DEBUG
 // ===================================================================================================================================================
 // COMPILER BEHAVIOR
 // ===================================================================================================================================================
@@ -124,8 +124,9 @@ std::lock_guard<std::mutex> CONCATENATE(x,Guard)(CONCATENATE(x, ATOMIC_REGION));
 #endif                      
 #define RADIANS(x)            ((x) * 0.01745329251)
 #define DEGREES(x)            ((x) * 57.2957795131)
-#define pure_virtual  0 // a Macro to make the code appear more like human language
 
+#define pure_virtual  0 // a Macro to make the code appear more like human language
+#define _static 
 
 #define _WORKING     1 // Because why not
 #define _NOT_WORKING 0
@@ -200,7 +201,7 @@ __debugbreak();
 
 #define Squared(x)                  ((x) * (x))
 
-#define _DEBUG
+
 #ifdef _DEBUG
 #define ASSERT(x) if(!(x)){exit(EXIT_FAILURE);}
 #define _GL(x)           GLClearError();\
@@ -523,3 +524,23 @@ bool GLLogCall(const char *function, const char *file, int line);
 void GLCheckError();
 void GLClearError();
 
+std::ostream& operator <<(std::ostream& S, Mat4 _other);
+
+
+
+
+
+Vec3 ExtractPosition(Mat4 _param);
+
+
+
+/*
+
+Begin/End
+Create/Destroy
+Open/Close
+Next/Previous
+Put/Get
+Sources/Destination
+
+*/

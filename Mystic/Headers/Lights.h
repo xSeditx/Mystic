@@ -25,8 +25,9 @@ public:
 	void Bind(Shader &_shader);
 	void Unbind();
 
-	Vec3 Color;
 	void SetPosition(Vec3 _pos) { Position = _pos; }// LightPosition.Set(Position);
+
+	Vec3 Color;
 };
 
 

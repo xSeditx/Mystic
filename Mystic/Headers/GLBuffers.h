@@ -139,7 +139,6 @@ public:
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size() * sizeof(value_type), Data);
 	}
 
-
 protected:
 	GLuint Stride;
 	std::vector<T> Data;
@@ -225,7 +224,6 @@ public:
 	} 
 #else
 
-
     void Bind();
     void Unbind();
 
@@ -235,7 +233,6 @@ public:
         /// I HAD THIS BECAUSE COLOR WAS CAUSING ISSUES LIKELY BECAUSE ITS A VEC 3 and Not a Vec4		if (bufferT == COLOR) return;
         if (GL_Handle == NULL)
         {
-
             _GL(glGenVertexArrays(1, &GL_Handle));
         }
 
@@ -244,8 +241,6 @@ public:
         GLint Amount = sizeof(T) / sizeof(float);
 
         Buffers.push_back(buffer);
-
-
 
         switch (bufferT)
         {/// Case statement of Buffer types. Indices pushback then exit the function so that EnableVertexAttribArray and glVertexAttribPointer are never called.
@@ -258,46 +253,53 @@ public:
 
 
         case BufferTypes::VERTEX:
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexPosition");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = VERTEX;
-            break;
-
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexPosition");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = VERTEX;
+			break;
+		}
         case BufferTypes::COLOR:
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexColor");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = COLOR;
-            break;
-
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexColor");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = COLOR;
+			break;
+		}
         case BufferTypes::NORMAL:
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexNormal");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = NORMAL;
-            break;
-
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexNormal");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = NORMAL;
+			break;
+		}
         case BufferTypes::UVCOORD:
-
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("TextureCoord");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = UVCOORD;
-            break;
-        case BufferTypes::TANGENT:
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexTangent");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = TANGENT;
-            break;
-        case BufferTypes::BITANGENT:
-            buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexBitangent");
-            if (buffer->Location == -1) return;
-            buffer->AttributeType = BITANGENT;
-            break;
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("TextureCoord");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = UVCOORD;
+			break;
+		}
+		case BufferTypes::TANGENT:
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexTangent");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = TANGENT;
+			break;
+		}
+		case BufferTypes::BITANGENT:
+		{
+			buffer->Location = Shader::GetActiveShader()->AttributeLocation("VertexBitangent");
+			if (buffer->Location == -1) return;
+			buffer->AttributeType = BITANGENT;
+			break;
+		}
         }
         _GL(glBindBuffer(GL_ARRAY_BUFFER, buffer->GL_Handle));
         _GL(glEnableVertexAttribArray(buffer->Location));
         _GL(glVertexAttribPointer(buffer->Location, Amount, GL_FLOAT, GL_FALSE, 0, (char *)NULL));
     }
 #endif
-
 
     void Render();
 };
@@ -308,7 +310,6 @@ class MYSTIC FrameBufferObject
 public:
 	FrameBufferObject() = default;
     FrameBufferObject(int _width, int _height, GLenum _datatype = GL_FLOAT, GLenum _internal = GL_RGBA32F, GLenum _format = GL_RGBA);
-
 
 	Vec2 Size;
 	int Width;
@@ -326,7 +327,7 @@ public:
 
 	enum AttachmentPoint_t
 	{
-		COLOR = GL_COLOR_ATTACHMENT0, // These are an implementation - dependent number of attachment points.You can query GL_MAX_COLOR_ATTACHMENTS to determine the number of color attachments that an implementation will allow.The minimum value for this is 8, so you are guaranteed to be able to have at least color attachments 0 - 7. These attachment points can only have images bound to them with color - renderable formats.All compressed image formats are not color - renderable, and thus cannot be attached to an FBO.
+		COLOR = GL_COLOR_ATTACHMENT0, // These are an implementation - dependent number of attachment points.You can query GL_MAX_COLOR_ATTACHMENTS to determine the number of color attachments that an implementation will allow.The minimum value for this is 8, so you are guaranteed to be able to have at least color attachments 0 - 7. These attachment points can only have Images bound to them with color - renderable formats.All compressed Image formats are not color - renderable, and thus cannot be attached to an FBO.
 		COLOR1 = GL_COLOR_ATTACHMENT1,
 		COLOR2 = GL_COLOR_ATTACHMENT2,
 		COLOR3 = GL_COLOR_ATTACHMENT3,
@@ -356,12 +357,11 @@ public:
 		COLOR29 = GL_COLOR_ATTACHMENT29,
 		COLOR30 = GL_COLOR_ATTACHMENT30,
 		COLOR31 = GL_COLOR_ATTACHMENT31,
-		DEPTH = GL_DEPTH_ATTACHMENT,//GL_DEPTH_ATTACHMENT : This attachment point can only have images with depth formats bound to it.The image attached becomes the Depth Buffer for the FBO. **NOTE** Even if you don't plan on reading from this depth_attachment, an off screen buffer that will be rendered to should have a depth attachment.
-		STENCIL = GL_STENCIL_ATTACHMENT,// This attachment point can only have images with stencil formats bound to it.The image attached becomes the stencil buffer for the FBO.
-		DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT// This is shorthand for "both depth and stencil".The image attached becomes both the depth and stencil buffers. Note : If you use GL_DEPTH_STENCIL_ATTACHMENT, you should use a packed depth - stencil internal format for the texture or renderbuffer you are attaching.
+		DEPTH = GL_DEPTH_ATTACHMENT,//GL_DEPTH_ATTACHMENT : This attachment point can only have Images with depth formats bound to it.The Image attached becomes the Depth Buffer for the FBO. **NOTE** Even if you don't plan on reading from this depth_attachment, an off screen buffer that will be rendered to should have a depth attachment.
+		STENCIL = GL_STENCIL_ATTACHMENT,// This attachment point can only have Images with stencil formats bound to it.The Image attached becomes the stencil buffer for the FBO.
+		DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT// This is shorthand for "both depth and stencil".The Image attached becomes both the depth and stencil buffers. Note : If you use GL_DEPTH_STENCIL_ATTACHMENT, you should use a packed depth - stencil internal format for the texture or renderbuffer you are attaching.
 	};
 	AttachmentPoint_t Attachments[10];
-
 };
 
 
@@ -385,7 +385,6 @@ struct MYSTIC UniformBufferObject
 
 		BindBase(_slot);
 		//* Same as above glBindBufferRange(GL_UNIFORM_BUFFER, 0, GL_Handle, 0, BlockSize);
-
 		SetSubData(0, BlockSize, NULL);
 		Unbind();
 	}
@@ -439,11 +438,13 @@ struct MYSTIC UniformBufferObject
 	{
 		if (gSync)
 		{
-			while (1)
+			while (true)
 			{
 				GLenum waitReturn = glClientWaitSync(gSync, GL_SYNC_FLUSH_COMMANDS_BIT, 1);
 				if (waitReturn == GL_ALREADY_SIGNALED || waitReturn == GL_CONDITION_SATISFIED)
+				{
 					return;
+				}
 			}
 		}
 	}
@@ -495,7 +496,7 @@ struct MYSTIC PersistantUniformBufferObject
         Index(NULL),
         GL_Handle(NULL),
         Pointer(NULL),
-        Program(_program->GL_Handle)
+        Program(_program->g_ID())
     {
         Index = fetchIndex(Name);
         SetBinding(Slot);

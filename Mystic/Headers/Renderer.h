@@ -223,10 +223,9 @@ public:
 	void Attach(Camera3D *_cam) { Camera = _cam; }
 	void Attach(Mesh _mesh) { Meshes.push_back(_mesh); }
 	void Attach(Material _mat) { Materials.push_back(_mat); }
-	void Attach(Texture& _tex) { Textures.push_back(&_tex); }
 
 	Mat4 Transform;
-	/// Design this to perform Asyn updates on all mesh objects prior to rendering. 
+	/// Design this to perform Async updates on all mesh objects prior to rendering. 
 	/// NVidia cards can also do async drawcalls
 	std::vector<Mesh> Meshes;
 	///=============================================================================================================================================
@@ -235,10 +234,7 @@ public:
 	/// PROS: More information
 	/// CONS: Slower
 	std::vector<Material> Materials;
-	/// PROS: Better Performance
-	/// CONS: Less information
-	std::vector<Texture* > Textures;
-	std::vector<Texture* > NormalTextures;
+
 	///=============================================================================================================================================
 
 	std::string Filepath;

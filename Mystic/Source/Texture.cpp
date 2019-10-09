@@ -10,9 +10,9 @@ Texture::Texture(std::string file)
 {
 	TextureID = SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 }
-Texture::Texture(Image &image)
+Texture::Texture(Bitmap &_image)
 	:
-	Picture(&image),
+	Picture(&_image),
 	Type(0),
 	TextureID(0),
 	MipmapComplete(0)
@@ -20,10 +20,10 @@ Texture::Texture(Image &image)
 	glGenTextures(1, &TextureID);
     Load();
 }
-Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
-{// Generate a Texture from a Sub image 
-    Picture = new Image();
-    *Picture = Image::FlippedImage(image);
+Texture::Texture(Bitmap &_image, int _x, int _y, int _width, int _height)
+{// Generate a Texture from a Sub Image 
+	Picture = new Bitmap();
+    *Picture = Bitmap::FlippedImage(_image);
 
     glGenTextures(1, &TextureID);
     Bind();
@@ -32,9 +32,9 @@ Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
     SetMagFiltering(GL_LINEAR);
     SetWrap(GL_REPEAT); // Texture Layout when sampling past texture
 
-    size_t Stride = Picture->Channels;
-    size_t SrcByteHeight = Picture->Size.y * Stride;
-    size_t SrcByteWidth = Picture->Size.x * Stride;
+    size_t Stride = Picture->BytesPerPixel();
+    size_t SrcByteHeight = Picture->Height() * Stride;
+    size_t SrcByteWidth = Picture->Width() * Stride;
 
     size_t DestByteHeight = _height * Stride;
     size_t DestByteWidth = _width * Stride;
@@ -55,7 +55,7 @@ Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
     int Counter = 0;
     for (int py = 0; py < _height; ++py)
     {
-        unsigned char *Src = &Picture->Data[SourceIndex];
+        unsigned char *Src = Picture->Data;
         unsigned char *Dest = &TempImage[DestIndex];
 
         memcpy(Dest, Src, RowSize);
@@ -68,21 +68,21 @@ Texture::Texture(Image &image, int _x, int _y, int _width, int _height)
     Picture->Data = TempImage;
 
 
-    *Picture = Image::FlippedImage(*Picture);
+    *Picture = Bitmap::FlippedImage(*Picture);
 
-    if (Picture->Channels == 4)
+    if (Picture->BytesPerPixel() == 4)
     {
         Format = GL_RGBA;
         InternalFormat = GL_RGBA;
     }
-    else if (Picture->Channels == 3)
+    else if (Picture->BytesPerPixel() == 3)
     {
         Format = GL_RGB;
         InternalFormat = GL_RGB;
     }
 
 
-    glTexImage2D(Target, 0, InternalFormat, (Picture->Size.x), Picture->Size.y, 0, Format, GL_UNSIGNED_BYTE, Picture->Data); // 	_GL(glTexImage2D(Target, 0, GL_RGB, Picture.Size.x, Picture.Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, Picture.Data));
+    glTexImage2D(Target, 0, InternalFormat, (Picture->Width()), Picture->Height(), 0, Format, GL_UNSIGNED_BYTE, &Picture->Data); // 	_GL(glTexImage2D(Target, 0, GL_RGB, Picture.Size.x, Picture.Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, Picture.Data));
     glGenerateMipmap(Target);
 
     Handle = glGetTextureHandleARB(TextureID);
@@ -102,17 +102,17 @@ bool Texture::Load()
 	SetWrap(GL_REPEAT); // Texture Layout when sampling past texture
  
 
-	if (Picture->Channels == 4)
+	if (Picture->BytesPerPixel() == 4)
 	{
 		Format = GL_RGBA;
 		InternalFormat = GL_RGBA;
 	}
-	else if (Picture->Channels == 3)
+	else if (Picture->BytesPerPixel() == 3)
 	{
 		Format = GL_RGB;
 		InternalFormat = GL_RGB;
 	}
-	_GL(glTexImage2D(Target, 0, InternalFormat, Picture->Size.x, Picture->Size.y, 0, Format, GL_UNSIGNED_BYTE, Picture->Data)); // 	_GL(glTexImage2D(Target, 0, GL_RGB, Picture.Size.x, Picture.Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, Picture.Data));
+	_GL(glTexImage2D(Target, 0, InternalFormat, Picture->Width(), Picture->Height(), 0, Format, GL_UNSIGNED_BYTE, Picture->Data)); // 	_GL(glTexImage2D(Target, 0, GL_RGB, Picture.Size.x, Picture.Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, Picture.Data));
 	glGenerateMipmap(Target);
 	Handle = glGetTextureHandleARB(TextureID);
 	glMakeTextureHandleResidentARB(Handle);
@@ -216,7 +216,7 @@ Cubemap::Cubemap()
 //View = glm::mat4(1.0f);
 //Model = glm::scale(glm::mat4(1.0f), glm::vec3(50, 50, 50));
 }
-Cubemap::Cubemap(Image *xpos, Image *xneg, Image *ypos, Image *yneg, Image *zpos, Image *zneg)
+Cubemap::Cubemap(Bitmap *xpos, Bitmap *xneg, Bitmap *ypos, Bitmap *yneg, Bitmap *zpos, Bitmap *zneg)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_CUBE_MAP);
@@ -262,15 +262,15 @@ void Cubemap::Update(Mat4 _p, Mat4 _m)
 	//Program->Disable();
 		
 }
-void Cubemap::Create(Image *xpos, Image *xneg, Image *ypos, Image *yneg, Image *zpos, Image *zneg)
+void Cubemap::Create(Bitmap *xpos, Bitmap *xneg, Bitmap *ypos, Bitmap *yneg, Bitmap *zpos, Bitmap *zneg)
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, TextureID);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, xpos->Size.x, xpos->Size.y, 0, xpos->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, xpos->Data);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, xneg->Size.x, xneg->Size.y, 0, xneg->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, xneg->Data);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, ypos->Size.x, ypos->Size.y, 0, ypos->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, ypos->Data);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, yneg->Size.x, yneg->Size.y, 0, yneg->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, yneg->Data);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, zpos->Size.x, zpos->Size.y, 0, zpos->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zpos->Data);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, zneg->Size.x, zneg->Size.y, 0, zneg->Channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zneg->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, xpos->Width(), xpos->Height(), 0, xpos->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, xpos->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, xneg->Width(), xneg->Height(), 0, xneg->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, xneg->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, ypos->Width(), ypos->Height(), 0, ypos->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, ypos->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, yneg->Width(), yneg->Height(), 0, yneg->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, yneg->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, zpos->Width(), zpos->Height(), 0, zpos->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zpos->Data);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, zneg->Width(), zneg->Height(), 0, zneg->BytesPerPixel() == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, zneg->Data);
 
 	CompileShader();
 	CreateCube();
@@ -438,22 +438,22 @@ void Cubemap::CreateCube()
 //   DestByteHeight * DestByteWidth,
 //   TempImage
 //);
-//Picture = new Image(TempImage, Vec2(_width, _height), image.Channels);
+//Picture = new Bitmap(TempImage, Vec2(_width, _height), Bitmap.Channels);
 
 
 
 
 //==============================================================================================================================================================================
-// FLIP THE IMAGE TO PLAY NICE WITH OPENGL
+// FLIP THE Bitmap TO PLAY NICE WITH OPENGL
 //==============================================================================================================================================================================
 //{
-//    unsigned char *Data = new unsigned char[image.DataSize];
-//    size_t RowSize = image.Size.x * sizeof(unsigned char) * image.Channels;
-//    size_t ImageSize = RowSize * image.Size.y;
+//    unsigned char *Data = new unsigned char[Bitmap.DataSize];
+//    size_t RowSize = Bitmap.Size.x * sizeof(unsigned char) * Bitmap.Channels;
+//    size_t ImageSize = RowSize * Bitmap.Size.y;
 //
 //    unsigned char *TempImage = new unsigned char[ImageSize] {0};
 //
-//    for_loop(I, image.Size.y)
+//    for_loop(I, Bitmap.Size.y)
 //    {
 //        memcpy(TempImage + ((size_t)I * RowSize), (Data + (ImageSize - (((size_t)I + 1) * RowSize))), RowSize);// Copy bottom row into top of Temp buffer
 //    }

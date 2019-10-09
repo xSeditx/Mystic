@@ -93,10 +93,6 @@ GLint Shader::GetUniformLocation(const char  *name)
 {
 	return 	 glGetProgramResourceLocation(GL_Handle, GL_UNIFORM, name) ;//glGetUniformLocation(ID, name);
 }
-GLuint Shader::GetName()
-{
-	return GL_Handle;
-}
 
 GLuint Shader::Load()
 {
@@ -318,10 +314,7 @@ void Shader::GetShaderError(ErrorType T)
 
 // STATIC 
 std::stack<Shader *> Shader::ActiveShader;
-Shader* Shader::GetActiveShader()
-{
-	return (ActiveShader.size() <= 0) ? nullptr : ActiveShader.top();
-}
+
 
 GLint Shader::GetBoundShader()
 {
@@ -331,7 +324,7 @@ GLint Shader::GetBoundShader()
 }
 
 int Shader::GetCSMaxBlocks()
-{//			data returns one value, the maximum number of active shader storage blocks that may be accessed by a compute shader.
+{//	data returns one value, the maximum number of active shader storage blocks that may be accessed by a compute shader.
 	int results = 0;
 	glGetIntegerv(GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS, &results);
 	return results;

@@ -37,7 +37,7 @@ std::vector<Material> Material::Extract(const aiScene*_scene)
 			
 			
 			// .aiTexel
-			Image Temp((unsigned char *)Text.pcData, Vec2(Text.mWidth, Text.mHeight), 4);
+			Bitmap Temp((unsigned char *)Text.pcData, Vec2(Text.mWidth, Text.mHeight), 4);
 			//SurfaceMaterial SurfacePush;
 			aiColor4D SpecColor, DiffColor, EmissiveColor, ReflectiveColor, TransColor, AmbientColor;
 			if (aiGetMaterialFloat(ai_Material, AI_MATKEY_SHININESS, &Shine) != AI_SUCCESS)

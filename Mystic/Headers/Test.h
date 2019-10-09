@@ -824,8 +824,8 @@ data returns one value, the maximum number of components of inputs read by a geo
 GL_MAX_GEOMETRY_OUTPUT_COMPONENTS
 data returns one value, the maximum number of components of outputs written by a geometry shader, which must be at least 128.
 
-GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS
-data returns one value, the maximum supported texture image units that can be used to access texture maps from the geometry shader.The value must be at least 16. See glActiveTexture.
+GL_MAX_GEOMETRY_TEXTURE_Image_UNITS
+data returns one value, the maximum supported texture Image units that can be used to access texture maps from the geometry shader.The value must be at least 16. See glActiveTexture.
 
 GL_MAX_GEOMETRY_UNIFORM_BLOCKS
 data returns one value, the maximum number of uniform blocks per geometry shader.The value must be at least 12. See glUniformBlockBinding.
@@ -878,8 +878,8 @@ data returns one value, the maximum number of active shader storage blocks that 
 GL_MAX_TEXTURE_BUFFER_SIZE
 data returns one value.The value gives the maximum number of texels allowed in the texel array of a texture buffer object.Value must be at least 65536.
 
-GL_MAX_TEXTURE_IMAGE_UNITS
-data returns one value, the maximum supported texture image units that can be used to access texture maps from the fragment shader.The value must be at least 16. See glActiveTexture.
+GL_MAX_TEXTURE_Image_UNITS
+data returns one value, the maximum supported texture Image units that can be used to access texture maps from the fragment shader.The value must be at least 16. See glActiveTexture.
 
 GL_MAX_TEXTURE_LOD_BIAS
 data returns one value, the maximum, absolute value of the texture level - of - detail bias.The value must be at least 2.0.
@@ -914,8 +914,8 @@ data returns one value, the maximum number of 4 - component generic vertex attri
 GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS
 data returns one value, the maximum number of active shader storage blocks that may be accessed by a vertex shader.
 
-GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS
-data returns one value, the maximum supported texture image units that can be used to access texture maps from the vertex shader.The value may be at least 16. See glActiveTexture.
+GL_MAX_VERTEX_TEXTURE_Image_UNITS
+data returns one value, the maximum supported texture Image units that can be used to access texture maps from the vertex shader.The value may be at least 16. See glActiveTexture.
 
 GL_MAX_VERTEX_UNIFORM_COMPONENTS
 data returns one value, the maximum number of individual floating - point, integer, or boolean values that can be held in uniform variable storage for a vertex shader.The value must be at least 1024. See glUniform.
@@ -953,8 +953,8 @@ data returns one value, the number of binary shader formats supported by the imp
 GL_PACK_ALIGNMENT
 data returns one value, the byte alignment used for writing pixel data to memory.The initial value is 4. See glPixelStore.
 
-GL_PACK_IMAGE_HEIGHT
-data returns one value, the image height used for writing pixel data to memory.The initial value is 0. See glPixelStore.
+GL_PACK_Image_HEIGHT
+data returns one value, the Image height used for writing pixel data to memory.The initial value is 0. See glPixelStore.
 
 
 	GL_LINE_SMOOTH_HINT
@@ -1047,8 +1047,8 @@ data returns one value, the maximum total number of active shader storage blocks
 GL_MAX_COMPUTE_UNIFORM_BLOCKS
 data returns one value, the maximum number of uniform blocks per compute shader.The value must be at least 14. See glUniformBlockBinding.
 
-GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS
-data returns one value, the maximum supported texture image units that can be used to access texture maps from the compute shader.The value may be at least 16. See glActiveTexture.
+GL_MAX_COMPUTE_TEXTURE_Image_UNITS
+data returns one value, the maximum supported texture Image units that can be used to access texture maps from the compute shader.The value may be at least 16. See glActiveTexture.
 
 GL_MAX_COMPUTE_UNIFORM_COMPONENTS
 data returns one value, the maximum number of individual floating - point, integer, or boolean values that can be held in uniform variable storage for a compute shader.The value must be at least 1024. See glUniform.
@@ -1147,8 +1147,8 @@ data returns one value, the number of words for fragment shader uniform variable
 GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS
 data returns one value, the number of words for geometry shader uniform variables in all uniform blocks(including default).The value must be at least 1. See glUniform.
 
-GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
-data returns one value, the maximum supported texture image units that can be used to access texture maps from the vertex shader and the fragment processor combined.If both the vertex shader and the fragment processing stage access the same texture image unit, then that counts as using two texture image units against this limit.The value must be at least 48. See glActiveTexture.
+GL_MAX_COMBINED_TEXTURE_Image_UNITS
+data returns one value, the maximum supported texture Image units that can be used to access texture maps from the vertex shader and the fragment processor combined.If both the vertex shader and the fragment processing stage access the same texture Image unit, then that counts as using two texture Image units against this limit.The value must be at least 48. See glActiveTexture.
 
 GL_MAX_COMBINED_UNIFORM_BLOCKS
 data returns one value, the maximum number of uniform blocks per program.The value must be at least 70. See glUniformBlockBinding.
@@ -1182,8 +1182,8 @@ data returns a single boolean value indicating whether single - bit pixels being
 GL_PACK_ROW_LENGTH
 data returns one value, the row length used for writing pixel data to memory.The initial value is 0. See glPixelStore.
 
-GL_PACK_SKIP_IMAGES
-data returns one value, the number of pixel images skipped before the first pixel is written into memory.The initial value is 0. See glPixelStore.
+GL_PACK_SKIP_ImageS
+data returns one value, the number of pixel Images skipped before the first pixel is written into memory.The initial value is 0. See glPixelStore.
 
 GL_PACK_SKIP_PIXELS
 data returns one value, the number of pixel locations skipped before the first pixel is written into memory.The initial value is 0. See glPixelStore.
@@ -1323,8 +1323,8 @@ When used with indexed variants of glGet(such as glGetInteger64i_v), data return
 GL_UNPACK_ALIGNMENT
 data returns one value, the byte alignment used for reading pixel data from memory.The initial value is 4. See glPixelStore.
 
-GL_UNPACK_IMAGE_HEIGHT
-data returns one value, the image height used for reading pixel data from memory.The initial is 0. See glPixelStore.
+GL_UNPACK_Image_HEIGHT
+data returns one value, the Image height used for reading pixel data from memory.The initial is 0. See glPixelStore.
 
 GL_UNPACK_LSB_FIRST
 data returns a single boolean value indicating whether single - bit pixels being read from memory are read first from the least significant bit of each unsigned byte.The initial value is GL_FALSE.See glPixelStore.
@@ -1332,8 +1332,8 @@ data returns a single boolean value indicating whether single - bit pixels being
 GL_UNPACK_ROW_LENGTH
 data returns one value, the row length used for reading pixel data from memory.The initial value is 0. See glPixelStore.
 
-GL_UNPACK_SKIP_IMAGES
-data returns one value, the number of pixel images skipped before the first pixel is read from memory.The initial value is 0. See glPixelStore.
+GL_UNPACK_SKIP_ImageS
+data returns one value, the number of pixel Images skipped before the first pixel is read from memory.The initial value is 0. See glPixelStore.
 
 GL_UNPACK_SKIP_PIXELS
 data returns one value, the number of pixel locations skipped before the first pixel is read from memory.The initial value is 0. See glPixelStore.
@@ -1390,7 +1390,7 @@ GL_MAX_VERTEX_ATOMIC_COUNTERS, GL_MAX_TESS_CONTROL_ATOMIC_COUNTERS, GL_MAX_TESS_
 
 GL_MAX_ELEMENT_INDEX is accepted by pname only if the GL version is 4.3 or greater.
 
-GL_MAX_COMPUTE_UNIFORM_BLOCKS, GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, GL_MAX_COMPUTE_UNIFORM_COMPONENTS, GL_MAX_COMPUTE_ATOMIC_COUNTERS, GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS, GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS, GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, GL_MAX_COMPUTE_WORK_GROUP_COUNT, and GL_MAX_COMPUTE_WORK_GROUP_SIZE and GL_DISPATCH_INDIRECT_BUFFER_BINDING are available only if the GL version is 4.3 or greater.
+GL_MAX_COMPUTE_UNIFORM_BLOCKS, GL_MAX_COMPUTE_TEXTURE_Image_UNITS, GL_MAX_COMPUTE_UNIFORM_COMPONENTS, GL_MAX_COMPUTE_ATOMIC_COUNTERS, GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS, GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS, GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, GL_MAX_COMPUTE_WORK_GROUP_COUNT, and GL_MAX_COMPUTE_WORK_GROUP_SIZE and GL_DISPATCH_INDIRECT_BUFFER_BINDING are available only if the GL version is 4.3 or greater.
 
 GL_MAX_DEBUG_GROUP_STACK_DEPTH, GL_DEBUG_GROUP_STACK_DEPTH and GL_MAX_LABEL_LENGTH are accepted only if the GL version is 4.3 or greater.
 

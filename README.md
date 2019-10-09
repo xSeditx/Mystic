@@ -1,19 +1,18 @@
-==================================================================================================================
-  7/ 18 /19
-==================================================================================================================
+___
+7/ 18 /19
+___
 * ECS Completed
-==================================================================================================================
-
+___
 The Entity Component System has been completed and is working. It is now largely a matter of getting into the swing
 of properly implementing things in a DOD fashion.
 
 
 
-==================================================================================================================
-  7/ 7 /19
-==================================================================================================================
+___ 
+7/ 7 /19
+___ 
 *TODO("YOU HAVE A SIGNIFICANT MEMORY LEAK, FIND IT. IDK Where is COULD POSSIBLY BE AT THE MOMENT!");
-==================================================================================================================
+___ 
 
 *This is a Strange Error in that I did not even know it existed until searching up some Windows API 
 and toying around with it. The memory leak is not active in that it does not steadily rise.
@@ -22,9 +21,9 @@ by Assimp or SOIL which either they or myself are not properly recovering.
 
 
 
-==================================================================================================================
+___ 
   7/ 7 /19
-==================================================================================================================
+___ 
 1:)TODO("IMPLEMENT A LOAD IN SPRITE IN ORDER TO MAKE THE VIRTUAL FUNCTIONALITY WORK");
 
 2:)TODO("MESH CLASS NEEDS MULTIPLE TEXTURES ADDED SO THAT THE MATERIALS ARE BOUND IN ORDER");
@@ -35,7 +34,7 @@ by Assimp or SOIL which either they or myself are not properly recovering.
 
 5:)TODO("NEED TO IMPLEMENT AND BIND SURFACE ELSE THERE WILL BE NO IMAGE, PERHAPS IT WILL BE A TEXTURE IDK YET");
 
-==================================================================================================================
+___ 
 1:)    Asset class has been liquidated for now so Load is unneeded at this point.
 In the future Asset will be added back however it will likely be a composed
 part of each class in that if a Manager for the specific class is desired then 
@@ -71,23 +70,23 @@ of setting state for the Given sprite such as its current frame
 
 
 
-==================================================================================================================
+___ 
   7/ 1 /19
-==================================================================================================================
+___ 
 TODO("Pass the Mesh class a Scene and an Index and have it return a Mesh object 
 for insertion into the Vector in the Scene class, this is currently wrong.");
-==================================================================================================================
+___ 
 
 
 
 
 
-==================================================================================================================
+___ 
   6/ 29/19
-==================================================================================================================
+___ 
 TODO("Make this an Asset or make a Manager Object to handle the naming, 
 asset management");
-==================================================================================================================
+___ 
 *    Lets not and say we did. It is likely the Asset class as a whole will be 
 removed soon. It has caused far to many problems and is not ready to be 
 inherited from at the moment. Perhaps just having an Asset Object inside of the
@@ -98,9 +97,9 @@ given class would be prefered.
 
 
 
-==================================================================================================================
+___ 
   6/ 26/19
-==================================================================================================================
+___ 
 *    Setup Mip mapping for Textures greatly increasing quality on detailed
 textures
 
@@ -110,9 +109,9 @@ textures
 
 
 
-==================================================================================================================
+___ 
   6/ 25/19
-==================================================================================================================
+___ 
 
 *    Implemented Bindless textures. Textures will no be passed to the GPU using a 
 64bit integer value which represents the Handle instead of the GL_ID. This has 
@@ -126,9 +125,9 @@ the GPU
 
 
 
-==================================================================================================================
+___ 
   6/ 18/19
-==================================================================================================================
+___ 
 
 *    Begin Implementing the Physics Library. Created an Auto Collider creator for the 
 simulation which takes in a Mesh and produces the appropriate collider of your

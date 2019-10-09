@@ -121,7 +121,6 @@ struct PersistantShaderBufferObject
     }
     void BindBase(GLuint _slot)
     {
-
         glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _slot, GL_Handle);
         //	glBindBufferRange(GL_UNIFORM_BUFFER, 0, GL_Handle, 0, BlockSize);
     }
@@ -261,8 +260,8 @@ public:
 	}
 
 	///------------Various unit testing--------------- 
-	Shader 
-        *TestShader,
+	Shader
+		*TestShader,
         *SpriteShader;
 
 	Scene TestScene;
@@ -305,13 +304,11 @@ public:
   //      Vec3 Velocity;
   //      Vec3 Acceleration;
   //  };
-
     
   //  COMPONENT(PositionComponent) 
   //  {
   //      Vec3 Position;
   //  };
-
    
 //  struct MovementSystem
 //        :
@@ -366,18 +363,19 @@ public:
 
         SpriteShader->Enable();
         {
-            std::unique_ptr<Image> TestSpriteSheet = std::make_unique<Image>("Resources\\Sprites\\Test.png");
-            TestSprite = std::make_unique<Sprite>(*TestSpriteSheet, Vec2(112, 112), 4); /// SIGNIFICANT PROBLEM, CREATING IMAGE FOR SPRITE SHEET TWICE
+            std::unique_ptr<Bitmap> TestSpriteSheet = std::make_unique<Bitmap>("Resources\\Sprites\\Test.png");
+            TestSprite = std::make_unique<Sprite>(*TestSpriteSheet, Vec2(112, 112), 4); /// SIGNIFICANT PROBLEM, CREATING Image FOR SPRITE SHEET TWICE
             TestSprite->AddAnimation(0, Animation(*TestSpriteSheet, { 0, 0, 56, 56 }, 0, 4));
         }
-
         SpriteShader->Disable();
-        TestShader->Enable();
+
+
+		TestShader->Enable();
 
 		TestCamera = Camera3D(Vec3(0), Vec3(0)); // Create a Camera to view the Scene  
 		Viewport::SetCamera(&TestCamera);
-
-	 	TestScene = Scene("Resources\\SponzaFBX//Sponza.fbx");		// Scene("Resources//TestScene//source//mp_toujane.fbx"); // "C:\\Users\\DELL\\source\\repos\\Mystic\\Mystic\\Resources\\SpaceScene\\Space Station Scene.dae"); //"Resources//Wolf//wolf_fbx.fbx");//
+		TestShader->Enable(); //Scene("Resources\\home_sunda\\Material//home_sunda_final.blend"); //
+		TestScene = Scene("Resources\\SponzaFBX//sunda.fbx");		//Scene("Resources//TestScene//source//mp_toujane.fbx"); // "C:\\Users\\DELL\\source\\repos\\Mystic\\Mystic\\Resources\\SpaceScene\\Space Station Scene.dae"); //"Resources//Wolf//wolf_fbx.fbx");//
 
 		TestLight = Light(Vec3(0)); TestLight.Color = fRGB(.90f, .95f, 1.00f);
 
@@ -386,22 +384,24 @@ public:
 
 		//https://ferransole.wordpress.com/category/azdo-series/
         TestUBO = new PersistantUniformBufferObject <Matrices>(TestShader, "Matrices", 0);
-        LightUBO = new PersistantUniformBufferObject<LightBlock>(TestShader, "Lights", 1 );
-       
+     //   LightUBO = new PersistantUniformBufferObject<LightBlock>(TestShader, "Lights", 1 );
+		TestLight.Position = Vec3(1, 1, 1);
    }
 
     void OnUpdate()
     {
 		TestCamera.Update();
+		TestScene.Update();
      //   TestECS->UpdateSystems(MainSystems, 0.1f);
 	}
 
 ///==================================================================================================================================================
 ///==                     RENDERING
 ///==================================================================================================================================================
-
+	
 	void OnRender()
 	{
+		Print(ExtractPosition(TestCamera.GetViewMatrix()));
 		Angle += .051f;
 #if 1
 		Shadows->Bind();
@@ -422,46 +422,51 @@ public:
  			TestLight.Bind(*TestShader);
             ///------------ Set Shader Uniform Block --------------------------------------
 
-			LightUBO->Data.Position = Vec4(TestLight.Position, 1.0);
-			LightUBO->Data.Color = Vec4(TestLight.Color, 1.0);
+		//	LightUBO->Data.Position = Vec4(TestLight.Position, 1.0);
+		//	LightUBO->Data.Color = Vec4(TestLight.Color, 1.0);
 
 
 			TestUBO->Data.Projection = TestCamera.ProjectionMatrix;
 			TestUBO->Data.View = TestCamera.ViewMatrix;
 
-			TestUBO->Data.Depth = Mat4
-            (
-                0.5, 0.0, 0.0, 0.0,
-                0.0, 0.5, 0.0, 0.0,
-                0.0, 0.0, 0.5, 0.0,
-                0.5, 0.5, 0.5, 1.0
-            ) *Shadows->GetDepthMatrix();
+
+			TestShader->SetUniform("DepthMatrix", Mat4(
+				0.5, 0.0, 0.0, 0.0,
+				0.0, 0.5, 0.0, 0.0,
+				0.0, 0.0, 0.5, 0.0,
+				0.5, 0.5, 0.5, 1.0
+			) * Shadows->GetDepthMatrix());
 
 			TestUBO->Data.EyePosition = TestCamera.Position;
-
 			TestUBO->Update(); 
-            LightUBO->Update();
+          //  LightUBO->Update();
             ///----------------------------------------------------------------------------
 
             TestScene.Render(*TestShader);
             TestUBO->LockBuffer();
-            LightUBO->LockBuffer();
+          //  LightUBO->LockBuffer();
 		}
         TestShader->Disable();
 #endif
-	 	
-         DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
-// SpriteShader->Enable();
-// 
- TestSprite->Position = Vec3(430, 640, 0);
-// TestSprite->Rotation.z += Angle;
-// TestSprite->Render(*SpriteShader);
-// SpriteShader->Disable();
+		SpriteShader->Enable();
+		{
+			TestSprite->Render(*SpriteShader);
+		}
+		SpriteShader->Disable();
+     //    DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
 	}
+
    float Angle = 0; /// Just a variable to move the Lighting around and not terribly important
 };
 
 
+			//TestUBO->Data.Depth = Mat4  //Shadows->GetDepthMatrix();// 
+           //(
+           //    0.5, 0.0, 0.0, 0.0,
+           //    0.0, 0.5, 0.0, 0.0,
+           //    0.0, 0.0, 0.5, 0.0,
+           //    0.5, 0.5, 0.5, 1.0
+           //) * Shadows->GetDepthMatrix();
 #include"Native.h"
 int main()
 {

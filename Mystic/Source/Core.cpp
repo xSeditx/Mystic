@@ -31,7 +31,7 @@ void GLClearError()
     GLenum Error = -1;
     while ((Error = glGetError()) != GL_NO_ERROR)
     {
-        if(Error)Print("Error:" << Error);
+        if(Error)Print("Error Cleared:" << Error);
     };
 }
 
@@ -50,7 +50,14 @@ std::ostream& operator<<(std::ostream &lhv, Vec4 const &rhv)
 	lhv << " X:" << rhv.x << " Y:" << rhv.y << " Z:" << rhv.z << " W:" << rhv.w;
 	return lhv;
 }
-
+std::ostream& operator <<(std::ostream& S, Mat4 _other)
+{
+	for_loop(i, 4)
+	{
+		Print(_other[i]);
+	}
+	return S;
+}
 
 GLenum ActiveTextureUnit()
 {
@@ -119,3 +126,9 @@ bool GetBlendState()
 	return results;
 }
 
+
+
+Vec3 ExtractPosition(Mat4 _param)
+{
+	return { _param[3].x, _param[3].y, _param[3].z };
+}

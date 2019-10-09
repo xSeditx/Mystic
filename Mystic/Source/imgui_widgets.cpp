@@ -941,12 +941,12 @@ bool ImGui::ImageButton(ImTextureID user_texture_id, const ImVec2& size, const I
     // Default to using texture ID as ID. User can still push string/integer prefixes.
     // We could hash the size/uv to create a unique ID but that would prevent the user from animating UV.
     PushID((void*)(intptr_t)user_texture_id);
-    const ImGuiID id = window->GetID("#image");
+    const ImGuiID id = window->GetID("#Image");
     PopID();
 
     const ImVec2 padding = (frame_padding >= 0) ? ImVec2((float)frame_padding, (float)frame_padding) : style.FramePadding;
     const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
-    const ImRect image_bb(window->DC.CursorPos + padding, window->DC.CursorPos + padding + size);
+    const ImRect Image_bb(window->DC.CursorPos + padding, window->DC.CursorPos + padding + size);
     ItemSize(bb);
     if (!ItemAdd(bb, id))
         return false;
@@ -959,8 +959,8 @@ bool ImGui::ImageButton(ImTextureID user_texture_id, const ImVec2& size, const I
     RenderNavHighlight(bb, id);
     RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
     if (bg_col.w > 0.0f)
-        window->DrawList->AddRectFilled(image_bb.Min, image_bb.Max, GetColorU32(bg_col));
-    window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, uv0, uv1, GetColorU32(tint_col));
+        window->DrawList->AddRectFilled(Image_bb.Min, Image_bb.Max, GetColorU32(bg_col));
+    window->DrawList->AddImage(user_texture_id, Image_bb.Min, Image_bb.Max, uv0, uv1, GetColorU32(tint_col));
 
     return pressed;
 }
@@ -5383,7 +5383,7 @@ bool ImGui::CollapsingHeader(const char* label, bool* p_open, ImGuiTreeNodeFlags
 // - Selectable()
 //-------------------------------------------------------------------------
 
-// Tip: pass a non-visible label (e.g. "##dummy") then you can use the space to draw other text or image.
+// Tip: pass a non-visible label (e.g. "##dummy") then you can use the space to draw other text or Image.
 // But you need to make sure the ID is unique, e.g. enclose calls in PushID/PopID or use ##unique_id.
 bool ImGui::Selectable(const char* label, bool selected, ImGuiSelectableFlags flags, const ImVec2& size_arg)
 {

@@ -42,7 +42,7 @@ DOCUMENTATION
   - Who uses Dear ImGui?
   - Why the odd dual naming, "Dear ImGui" vs "ImGui"?
   - How can I tell whether to dispatch mouse/keyboard to imgui or to my application?
-  - How can I display an image? What is ImTextureID, how does it works?
+  - How can I display an Image? What is ImTextureID, how does it works?
   - Why are multiple widgets reacting when I interact with a single one? How can I have
     multiple widgets with the same label or with an empty label? A primer on labels and the ID Stack...
   - How can I use my own math types instead of ImVec2/ImVec4?
@@ -537,13 +537,13 @@ CODE
  - 2015/02/08 (1.31) - renamed GetTextLineSpacing() to GetTextLineHeightWithSpacing()
  - 2015/02/01 (1.31) - removed IO.MemReallocFn (unused)
  - 2015/01/19 (1.30) - renamed ImGuiStorage::GetIntPtr()/GetFloatPtr() to GetIntRef()/GetIntRef() because Ptr was conflicting with actual pointer storage functions.
- - 2015/01/11 (1.30) - big font/image API change! now loads TTF file. allow for multiple fonts. no need for a PNG loader.
+ - 2015/01/11 (1.30) - big font/Image API change! now loads TTF file. allow for multiple fonts. no need for a PNG loader.
               (1.30) - removed GetDefaultFontData(). uses io.Fonts->GetTextureData*() API to retrieve uncompressed pixels.
                        font init:  { const void* png_data; unsigned int png_size; ImGui::GetDefaultFontData(NULL, NULL, &png_data, &png_size); <..Upload texture to GPU..>; }
                        became:     { unsigned char* pixels; int width, height; io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height); <..Upload texture to GPU>; io.Fonts->TexId = YourTextureIdentifier; }
                        you now have more flexibility to load multiple TTF fonts and manage the texture buffer for internal needs.
                        it is now recommended that you sample the font texture with bilinear interpolation.
-              (1.30) - added texture identifier in ImDrawCmd passed to your render function (we can now render images). make sure to set io.Fonts->TexID.
+              (1.30) - added texture identifier in ImDrawCmd passed to your render function (we can now render Images). make sure to set io.Fonts->TexID.
               (1.30) - removed IO.PixelCenterOffset (unnecessary, can be handled in user projection matrix)
               (1.30) - removed ImGui::IsItemFocused() in favor of ImGui::IsItemActive() which handles all widgets
  - 2014/12/10 (1.18) - removed SetNewWindowDefaultPos() in favor of new generic API SetNextWindowPos(pos, ImGuiSetCondition_FirstUseEver)
@@ -610,11 +610,11 @@ CODE
      have 'io.WantCaptureKeyboard=false'. Depending on your application logic it may or not be inconvenient. You might want to track which key-downs
      were targeted for Dear ImGui, e.g. with an array of bool, and filter out the corresponding key-ups.)
 
- Q: How can I display an image? What is ImTextureID, how does it works?
+ Q: How can I display an Image? What is ImTextureID, how does it works?
  A: Short explanation:
     - You may use functions such as ImGui::Image(), ImGui::ImageButton() or lower-level ImDrawList::AddImage() to emit draw calls that will use your own textures.
     - Actual textures are identified in a way that is up to the user/engine. Those identifiers are stored and passed as ImTextureID (void*) value.
-    - Loading image files from the disk and turning them into a texture is not within the scope of Dear ImGui (for a good reason).
+    - Loading Image files from the disk and turning them into a texture is not within the scope of Dear ImGui (for a good reason).
       Please read documentations or tutorials on your graphics API to understand how to display textures on the screen before moving onward.
 
     Long explanation:
@@ -626,7 +626,7 @@ CODE
       ImTextureID is nothing more that a void*, aka 4/8 bytes worth of data: just enough to store 1 pointer or 1 integer of your choice.
       Dear ImGui doesn't know or understand what you are storing in ImTextureID, it merely pass ImTextureID values until they reach your rendering function.
     - In the examples/ bindings, for each graphics API binding we decided on a type that is likely to be a good representation for specifying
-      an image from the end-user perspective. This is what the _examples_ rendering functions are using:
+      an Image from the end-user perspective. This is what the _examples_ rendering functions are using:
 
          OpenGL:     ImTextureID = GLuint                       (see ImGui_ImplGlfwGL3_RenderDrawData() function in imgui_impl_glfw_gl3.cpp)
          DirectX9:   ImTextureID = LPDIRECT3DTEXTURE9           (see ImGui_ImplDX9_RenderDrawData()     function in imgui_impl_dx9.cpp)
@@ -655,18 +655,18 @@ CODE
         MyTexture* texture = (MyTexture*)pcmd->TextureId;
         MyEngineBindTexture2D(texture);
 
-    Once you understand this design you will understand that loading image files and turning them into displayable textures is not within the scope of Dear ImGui.
+    Once you understand this design you will understand that loading Image files and turning them into displayable textures is not within the scope of Dear ImGui.
     This is by design and is actually a good thing, because it means your code has full control over your data types and how you display them.
-    If you want to display an image file (e.g. PNG file) into the screen, please refer to documentation and tutorials for the graphics API you are using.
+    If you want to display an Image file (e.g. PNG file) into the screen, please refer to documentation and tutorials for the graphics API you are using.
 
-    Here's a simplified OpenGL example using stb_image.h:
+    Here's a simplified OpenGL example using stb_Image.h:
 
-        // Use stb_image.h to load a PNG from disk and turn it into raw RGBA pixel data:
-        #define STB_IMAGE_IMPLEMENTATION
-        #include <stb_image.h>
+        // Use stb_Image.h to load a PNG from disk and turn it into raw RGBA pixel data:
+        #define STB_Image_IMPLEMENTATION
+        #include <stb_Image.h>
         [...]
-        int my_image_width, my_image_height;
-        unsigned char* my_image_data = stbi_load("my_image.png", &my_image_width, &my_image_height, NULL, 4);
+        int my_Image_width, my_Image_height;
+        unsigned char* my_Image_data = stbi_load("my_Image.png", &my_Image_width, &my_Image_height, NULL, 4);
 
         // Turn the RGBA pixel data into an OpenGL texture:
         GLuint my_opengl_texture;
@@ -675,10 +675,10 @@ CODE
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Image_width, Image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, Image_data);
 
         // Now that we have an OpenGL texture, assuming our imgui rendering function (imgui_impl_xxx.cpp file) takes GLuint as ImTextureID, we can display it:
-        ImGui::Image((void*)(intptr_t)my_opengl_texture, ImVec2(my_image_width, my_image_height));
+        ImGui::Image((void*)(intptr_t)my_opengl_texture, ImVec2(my_Image_width, my_Image_height));
 
     C/C++ tip: a void* is pointer-sized storage. You may safely store any pointer or integer into it by casting your value to ImTextureID / void*, and vice-versa.
     Because both end-points (user code and rendering function) are under your control, you know exactly what is stored inside the ImTextureID / void*.
@@ -2330,7 +2330,7 @@ const char* ImGui::FindRenderedTextEnd(const char* text, const char* text_end)
 }
 
 // Internal ImGui functions to render text
-// RenderText***() functions calls ImDrawList::AddText() calls ImBitmapFont::RenderText()
+// RenderText***() functions calls ImDrawList::AddText() calls ImImageFont::RenderText()
 void ImGui::RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash)
 {
     ImGuiContext& g = *GImGui;

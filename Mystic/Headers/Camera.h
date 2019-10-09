@@ -100,6 +100,7 @@ public:
 	void PushViewMatrix();
 	void PopProjectionMatrix();
 	void PopViewMatrix();
+
 	Mat4 ProjectionMatrix = Mat4(0);
 	Mat4 ViewMatrix = Mat4(0);
 	Mat4 Identity = Mat4(1.0f);
@@ -120,8 +121,6 @@ private:
 
 	std::stack<Mat4> ViewMatrixStack;
 	std::stack<Mat4> ProjectionMatrixStack;
-
-
 };
 
 

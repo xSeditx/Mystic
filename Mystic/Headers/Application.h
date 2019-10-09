@@ -37,8 +37,10 @@ class  MYSTIC Application
 public:
 	Application();
    ~Application();
+
 	iVec2 Position;
 	iVec2 Size;
+
 	std::string Title;
 
 	void Start();

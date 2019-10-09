@@ -1,14 +1,13 @@
 #include"Image.h"
 #include"OpenGL.h"
-Image::~Image()
+Bitmap::~Bitmap()
 {
-	//delete[](Data);
-	//Data = NULL;
+	delete[](Data);
+	Data = NULL;
 }
 
 
-
-Image::Image(std::string file)
+Bitmap::Bitmap(std::string file)
 	:
 	Filepath(file)
 {
@@ -19,7 +18,7 @@ Image::Image(std::string file)
 		__debugbreak();
 	}
 	//==============================================================================================================================================================================
-	// FLIP THE IMAGE TO PLAY NICE WITH OPENGL
+	// FLIP THE Image TO PLAY NICE WITH OPENGL
 	//==============================================================================================================================================================================
 	{
 		size_t RowSize = Size.x * sizeof(unsigned char) * Channels;
@@ -38,39 +37,39 @@ Image::Image(std::string file)
 	//==============================================================================================================================================================================
 }
 
-Image::Image(void *_data, Vec2 _dims, unsigned int _channels)
+Bitmap::Bitmap(void *_data, Vec2 _dims, unsigned int _channels)
 	:
 	Size(_dims),
 	Channels(_channels),
 	Data((unsigned char*)_data)
 {}
 
-bool Image::Reload()
+bool Bitmap::Reload()
 {
 	Data = SOIL_load_image(Filepath.c_str(), &Size.x, &Size.y, 0, SOIL_LOAD_AUTO);
 	return true;
 }
 
-Image Image::FlippedImage(Image &_image)
+Bitmap& Bitmap::FlippedImage(Bitmap &_Image)
 {
-    Image Pic;
-    Pic.Data = new unsigned char[_image.DataSize];
-    Pic.Channels = _image.Channels;
-    Pic.DataSize = _image.DataSize;
-    Pic.Size = _image.Size;
+	Bitmap Pic;
+    Pic.Data = new unsigned char[_Image.DataSize];
+    Pic.Channels = _Image.Channels;
+    Pic.DataSize = _Image.DataSize;
+    Pic.Size = _Image.Size;
 
     //==============================================================================================================================================================================
-    // FLIP THE IMAGE TO PLAY NICE WITH OPENGL
+    // FLIP THE Image TO PLAY NICE WITH OPENGL
     //==============================================================================================================================================================================
     {
-        size_t RowSize = _image.Size.x * sizeof(unsigned char) * _image.Channels;
-        size_t ImageSize = RowSize * _image.Size.y;
+        size_t RowSize = _Image.Size.x * sizeof(unsigned char) * _Image.Channels;
+        size_t ImageSize = RowSize * _Image.Size.y;
 
         unsigned char *TempImage = new unsigned char[ImageSize] {0};
 
-        for_loop(I, _image.Size.y)
+        for_loop(I, _Image.Size.y)
         {
-            memcpy(TempImage + ((size_t)I * RowSize), (_image.Data + (ImageSize - (((size_t)I + 1) * RowSize))), RowSize);// Copy bottom row into top of Temp buffer
+            memcpy(TempImage + ((size_t)I * RowSize), (_Image.Data + (ImageSize - (((size_t)I + 1) * RowSize))), RowSize);// Copy bottom row into top of Temp buffer
         }
 
         memcpy(Pic.Data, TempImage, ImageSize);
@@ -82,28 +81,6 @@ Image Image::FlippedImage(Image &_image)
 }
 
 
-//
-//
-//class Image {
-//	Image()
-//	{
-//		Data = new unsigned char[1000];
-//	}
-//	~Image() {
-//		delete (Data); // Becomes a nightmare. 
-//	}
-//	unsigned char *Data;
-//}
-//
-//int main()
-//{
-//	Image NewImage = Image();
-//	Image NextImage = NewImage;
-//}
-//
-//
-//
-//
 
 
 
@@ -112,7 +89,7 @@ Image Image::FlippedImage(Image &_image)
 
 //memcpy(TempImage + (ImageSize - RowSize), Data + RowPointer, RowSize);// Copy bottom row into top row
 //memcpy(TempImage + RowPointer, Temp, RowSize);// Copy Temp into top row
-//unsigned char *Temp = new unsigned char[Size.y *(sizeof(unsigned char) * 3)]; //Size.x * Size.y *(sizeof(unsigned char) * 4)];   //SOIL_load_image(Filepath.c_str(), &Size.x, &Size.y, &Channels, SOIL_LOAD_RGB);
+//unsigned char *Temp = new unsigned char[Size.y *(sizeof(unsigned char) * 3)]; //Size.x * Size.y *(sizeof(unsigned char) * 4)];   //SOIL_load_Image(Filepath.c_str(), &Size.x, &Size.y, &Channels, SOIL_LOAD_RGB);
 
 //copy temp buffer to lower row
 //

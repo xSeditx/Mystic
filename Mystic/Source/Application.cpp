@@ -93,7 +93,7 @@ void Application::Render()
 { // Calls User define Application Render function
 	OnRender();
 	ApplicationWindow->Sync();
-	//ApplicationWindow->CLS(100, 150, 255); // Do not like the duel Dereference every single frame Feels unneeded at best
+	ApplicationWindow->CLS(100, 150, 255); // Do not like the duel Dereference every single frame Feels unneeded at best
 }
 
 void Application::OnStart()

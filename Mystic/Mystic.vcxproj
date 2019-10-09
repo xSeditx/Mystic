@@ -146,6 +146,7 @@
     <ClInclude Include="Headers\ECS.h" />
     <ClInclude Include="Headers\ECScomponent.h" />
     <ClInclude Include="Headers\ECSsystem.h" />
+    <ClInclude Include="Headers\FileIO.h" />
     <ClInclude Include="Headers\Gui.h" />
     <ClInclude Include="Headers\imgui_impl_glfw.h" />
     <ClInclude Include="Headers\imgui_impl_opengl3.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Source\ECS.cpp" />
     <ClCompile Include="Source\ECScomponent.cpp" />
     <ClCompile Include="Source\ECSsystem.cpp" />
+    <ClCompile Include="Source\FileIO.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\GLBuffers.cpp" />
     <ClCompile Include="Source\GUI.cpp" />
@@ -219,6 +221,7 @@
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Debug.sfx" />
     <Text Include="Resources\Progress.txt" />
     <Text Include="Resources\Removed.txt" />
     <Text Include="Resources\ParallelNotes.txt" />

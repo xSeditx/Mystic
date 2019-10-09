@@ -226,7 +226,7 @@ void FrameBufferObject::ValidateFrameBuffer()
     case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
 
         ErrorString = "Incomplete FrameBuffer Dimensions";
-        PossibleSolution = "Not all attached images have the same width and height. Check all Image sizes";
+        PossibleSolution = "Not all attached Images have the same width and height. Check all Image sizes";
         break;
     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 

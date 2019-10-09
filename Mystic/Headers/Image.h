@@ -4,24 +4,44 @@
 
 #pragma comment(lib , "debugSOIL.lib") // SOIL Lib I built for _x64 debug
  
-class Image
+class Bitmap
 {
 public:
-	Image() = default;	~Image();
+	Bitmap() = default;	~Bitmap();
 
-	Image(std::string file);
-	Image(void *_data, Vec2 _dims, unsigned int _channels);
+	/* Create a Bitmap from an Image File */
+	Bitmap(std::string file);
 
-	unsigned char *Data = nullptr;
-	std::string Filepath;
-	int Channels = 4;
+	/* Create a Bitmap from Data in Memory */
+	Bitmap(void *_data, Vec2 _dims, unsigned int _channels);
 
-	iVec2 Size = iVec2(0);
-    size_t DataSize = 0;
+	/* Going to be used for Hot reloading of the Bitmap image*/
 	bool Reload();
 
+	/* return the size in Bytes of the Bitmap */
 	const unsigned int size() { return (Size.x * Size.y * (sizeof(unsigned char) * Channels)); }
 
-    static Image FlippedImage(Image &_image);
+	/* Return the Width of the Bitmap */
+	inline uint32_t Width() { return Size.x; }
+
+	/* Returns the Height  */
+	inline uint32_t Height() { return Size.y; }
+
+	/* returns the number of RGBA components avalible in the Bitmap */
+	int BytesPerPixel() { return Channels; }
+
+	/* Utility function that returns an Image with Inverted Y component
+	NOTE: I believe their might currently be an Error here */
+    static Bitmap& FlippedImage(Bitmap &_Image);
+
+
+	unsigned char *Data = nullptr;
+private:   
+
+	int Channels{ 4 };
+	iVec2 Size{ 0 };
+	size_t DataSize{ 0 };
+
+	std::string Filepath{""};
 };
 

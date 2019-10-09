@@ -87,7 +87,7 @@ struct Frame
 {
 public:
     Frame() = default;
-	Frame(Image &img, Quad f);
+	Frame(Bitmap &img, Quad f);
 
  	Vec2 Coords[4];
 
@@ -108,8 +108,8 @@ public:
     {}
 	~Animation() {}
 
-	Animation(Image &img, Quad sourcerect, unsigned int numframes);
-	Animation(Image &img, Quad srcrect, int border, GLuint numframes);
+	Animation(Bitmap &img, Quad sourcerect, unsigned int numframes);
+	Animation(Bitmap &img, Quad srcrect, int border, GLuint numframes);
 
 	std::vector<Frame> Frames;
 
@@ -149,8 +149,8 @@ class Sprite
 {
 public:
     Sprite() = default;
-	Sprite(Image &source, Vec2 dimensions, int numstates);
-	Sprite(Image &source, Vec2 dimensions);
+	Sprite(Bitmap &source, Vec2 dimensions, int numstates);
+	Sprite(Bitmap &source, Vec2 dimensions);
 
 	char *Name;
 

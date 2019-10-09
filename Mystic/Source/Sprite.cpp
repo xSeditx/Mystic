@@ -17,10 +17,10 @@
 // That might be the best method honestly.
 
 
-Frame::Frame(Image& img, Quad f) // IDK, possibly pass the UnitX/Y instead of Image. Like to just pass Quad but how... Normalize in Shader? Use Values for finding proper index? Suck it up and just leave it the fuck alone....
+Frame::Frame(Bitmap& img, Quad f) // IDK, possibly pass the UnitX/Y instead of Image. Like to just pass Quad but how... Normalize in Shader? Use Values for finding proper index? Suck it up and just leave it the fuck alone....
 {
-    float UnitX = (1.0f / img.Size.x);
-    float UnitY = (1.0f / img.Size.y);
+    float UnitX = (1.0f / img.Width());
+    float UnitY = (1.0f / img.Height());
     float UnitXH = UnitX * .5f;
     float UnitYH = UnitY * .5f;
     
@@ -45,7 +45,7 @@ Frame::Frame(Image& img, Quad f) // IDK, possibly pass the UnitX/Y instead of Im
 void Frame::Bind(Shader &_shader)
 {
     _GL( glBindBuffer(GL_ARRAY_BUFFER, FrameID) ); 	// or even better an index that resprents how much to multiply U and V by to get the correct coords since that could greatly increase performance....
-    GLint TCoords = glGetAttribLocation(_shader.GL_Handle, "TextureCoord");
+    GLint TCoords = glGetAttribLocation(_shader.g_ID(), "TextureCoord");
 
     _GL( glEnableVertexAttribArray(TCoords));
     _GL( glVertexAttribPointer(TCoords, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)NULL) );
@@ -61,7 +61,7 @@ void Frame::Unbind()
 //   Each Animation is a state that an Entity can be in, Dead alive etc and is a group of frames that represents a state of the StaticSprite
 //=========================================================================================================================================
 
-Animation::Animation(Image &spr, Quad srcrect, GLuint numframes)
+Animation::Animation(Bitmap &spr, Quad srcrect, GLuint numframes)
 	:
 	TotalFrames(numframes),
 	AnimationSpeed(NULL),
@@ -78,7 +78,7 @@ Animation::Animation(Image &spr, Quad srcrect, GLuint numframes)
 		*this += frame; /// warning C26444: Avoid unnamed objects with custom construction and destruction (es.84).
 	}
 }
-Animation::Animation(Image &spr, Quad srcrect, int border, GLuint numframes) // SAME HERE
+Animation::Animation(Bitmap &spr, Quad srcrect, int border, GLuint numframes) // SAME HERE
 	:
 	TotalFrames(numframes),
 	AnimationSpeed(NULL),
@@ -119,7 +119,7 @@ std::vector<Frame>& Animation::AddFrame(Frame frame)
 //=========================================================================================================================================
 
 
-Sprite::Sprite(Image &source, Vec2 dimensions)
+Sprite::Sprite(Bitmap &source, Vec2 dimensions)
      :
      Mesh(),
      ProjectionMatrix(glm::ortho(0.0f, 960.0f, 1280.0f, 0.0f, -1.0f, 1.0f)),
@@ -134,11 +134,11 @@ Sprite::Sprite(Image &source, Vec2 dimensions)
 { // Fix this function to make a single Sprite out of an Image so its a basic sprite with no animation
      __debugbreak();// Possibly derive static sprite
 	*this = Sprite(source, dimensions, 1);
-     AddAnimation(0, Animation(source, { 0, 0, (int)source.Size.x, (int)source.Size.y }, 1)); // Single hand Item Display
+     AddAnimation(0, Animation(source, { 0, 0, (int)source.Width(), (int)source.Height() }, 1)); // Single hand Item Display
 	 this->Rotation = Vec3(0);
 }
 
-Sprite::Sprite(Image &source, Vec2 dimensions, int numstates)
+Sprite::Sprite(Bitmap &source, Vec2 dimensions, int numstates)
 	:
     Mesh(), 
     ProjectionMatrix(glm::ortho(0.0f, 960.0f, 1280.0f, 0.0f, -1.0f, 1.0f)), 

@@ -15,8 +15,14 @@ public:
 	void Unbind();
 	void Render(Vec3 _position);
 
-	GLuint GetShadowMap() { return DepthTexture; }
-	Mat4 GetDepthMatrix() { return LightMatrix; }
+	GLuint GetShadowMap()
+	{
+		return DepthTexture;
+	}
+	Mat4 GetDepthMatrix() 
+	{ 
+		return LightMatrix;
+	}
 	GLuint FrameBufferID;
 	GLuint DepthTexture;
 	uint64_t DepthTextureHandle;
