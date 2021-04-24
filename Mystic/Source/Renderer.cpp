@@ -42,6 +42,81 @@ Cycle over Meshes
   2:
 */
 
+#include"GLBuffers.h"
+
+/*
+
+A Surface should Consist of Textures Describing its suface, Color, Metallic, Albedo, Normals etc....std::vector<Textures>/std::vector<TypeEnum> Types;
+Material Should consist of a Shader and a Bunch of Surfaces std::vector<Surface> Surfaces;
+Render Pass should consist of Geometry along with Materials; 	std::vector<std::vector<uint32_t>> MaterialGroups;
+
+*/
+ 
+
+
+RenderPass::RenderPass(DeferredRenderer* _render, FrameBufferObject& _fbo, Shader* _shader)
+:
+	ParentRenderer(_render),
+	FrameBuffer(_fbo),
+	DefaultShader(_shader)
+{
+	MaterialGroups.resize(_render->Materials.size());
+}
+
+void RenderPass::Submit(uint32_t _meshID, uint32_t _materialID)
+{
+	MYSTIC_ASSERT(_materialID < MaterialGroups.size(), "Attempting to Use a Material that does not exist: \n Material ID out of Range");
+//if (MaterialGroups.size() < _materialID)
+//{// If the Index we wish to insert this Mesh into does not exist yet, Create it. [#PERF: This is not Ideal].
+//	MaterialGroups.resize(_materialID);
+//}
+	MaterialGroups[_materialID].push_back(_meshID);//. .resize(_render->Materials.size());
+//uint32_t mID{ 0 };
+//for (auto& M : ParentRenderer->Meshes)
+//{
+////	TODO("Ended right here... Trying to Abstract away the Render pass so that when I submit I Submit to a specific pass giving it my FrameBuffer and Default Shader information. This likely will chance so that my Render pass is nothing more than a FrameBuffer and Possibly Vector of Geometry,.")
+//		//Submit(mID, M.MaterialID);
+//	++mID;
+//}
+
+
+	MaterialGroups[_materialID].push_back(_meshID);
+}
+
+
+DeferredRenderer::DeferredRenderer(std::string _file)
+	:
+	Filepath(_file)
+{
+	Importer::ImportScene(_file, Meshes, Materials);
+	Camera = new Camera3D({ 0,0,0 }, { 0,0,0 });
+}
+void DeferredRenderer::Render(Shader& _shader)// Must fix this as the shader should be determined by the Material and pass 
+{
+	uint32_t mID{ 0 };
+	for (auto& P : Passes)
+	{// Cycle over all Rendering Passes
+		for_loop(index, P.MaterialGroups.size())
+		{// Cycle over all Material Groups in the Pass[#NOTE: All set to single NULL group for Shadow and Geometry Rendering with no Material]
+			Materials[index].Bind(&_shader);
+			for (auto& M_index : P.MaterialGroups[index])
+			{
+				Meshes[M_index].Render(_shader);
+			}
+		}
+	}
+}
+void DeferredRenderer::Update()
+{
+}
+void DeferredRenderer::CreateRenderPass(FrameBufferObject& _fbo, Shader* _shader)
+{
+	Passes.emplace_back( this, _fbo, _shader );
+}
+
+// const Mesh& _mesh, Material& _material)
+
+/*std::vector<std::vector<uint32_t>> MaterialGroups;*/
 
 
 Scene::Scene(std::string _file)
@@ -166,7 +241,8 @@ void Renderer::Submit(Mesh &_mesh)
 
 
 
-
+void Scene::Attach(Mesh& _mesh) { Meshes.push_back(_mesh); }
+void Scene::Attach(Material& _mat) { Materials.push_back(_mat); }
 
 
 

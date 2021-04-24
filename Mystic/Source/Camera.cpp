@@ -126,11 +126,11 @@ void Camera3D::MoveBack(float speed)
 }
 void Camera3D::MoveLeft(float speed)
 {
-	Target_Position	-= (speed)* Right;
+	Target_Position	-= (speed * Right);
 }
 void Camera3D::MoveRight(float speed)
 {
-	Target_Position	+= (speed)* Right;
+	Target_Position	+= (speed * Right);
 
 }
 void Camera3D::MoveForward(float speed)

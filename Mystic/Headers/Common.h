@@ -166,6 +166,9 @@ std::lock_guard<std::mutex> CONCATENATE(x,Guard)(CONCATENATE(x, ATOMIC_REGION));
 // USEFUL FOR END OF CODING SESSION TO MARK THE STATE OF ONES PROGRESS 
 // AND ANY NOTES THEY WISH TO LEAVE FOR THEMSELVES WHEN THEY PICK BACK UP
 
+#define MYSTIC_ASSERT(x, str) if((x) != true) Print("ERROR:" << str);assert(x);
+
+
 #define TODO(x) do{\
 static bool _seenAlready = false;\
 if(!_seenAlready){\

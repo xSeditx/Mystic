@@ -97,7 +97,7 @@ public:
     {
         for_loop(i, Listeners.size())
         {
-            const std::vector<TagID>& ComponentIDs = Listeners[i]->getComponentIDs();
+            const std::vector<TagID>& ComponentIDs = Listeners[i]->g_ComponentIDs();
 
             for_loop(j, ComponentIDs.size())
             {

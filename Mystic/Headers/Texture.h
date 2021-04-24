@@ -22,8 +22,8 @@ public:
 	Texture(std::string file);
 	Texture(Bitmap &_image);
     Texture(Bitmap &_image, int x,int y, int width, int height);
-
-
+	Texture(uint32_t _width, uint32_t _height, GLenum _type = GL_RGB, GLenum Format = GL_RGB, GLenum _wrapMode = GL_REPEAT, GLenum _filtering = GL_LINEAR, GLenum _internalFormat = GL_RGB);
+	//GL_RED, GL_RG, GL_RGB, GL_BGR, GL_RGBA, GL_BGRA, GL_RED_INTEGER, GL_RG_INTEGER, GL_RGB_INTEGER, GL_BGR_INTEGER, GL_RGBA_INTEGER, GL_BGRA_INTEGER, GL_STENCIL_INDEX, GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL.
 	GLuint TextureID = 0;
 	GLenum Target = GL_TEXTURE_2D;
 

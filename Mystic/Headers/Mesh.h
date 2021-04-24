@@ -90,6 +90,7 @@ public:
 		uint32_t  baseInstance;
 	}IndirectDraw;
 
+	unsigned int SceneID;
 	unsigned int MaterialID;
 	unsigned int PrimativeType = GL_TRIANGLES;
 
@@ -104,7 +105,7 @@ public:
  	void Bind(Shader &_shader);
 	void Render(Shader &_shader) override;
 
-	void Unbind() override;
+ 	void Unbind() override;
  	void Update() override;
 
 	void GetPrimativeType(unsigned int input)

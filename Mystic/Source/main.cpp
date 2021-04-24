@@ -19,6 +19,7 @@
 #include "Primitive.h"
 #include "Window.h"
 
+//#define _DEFERRED_RENDER
 
 Camera3D TestCamera;
 
@@ -71,8 +72,6 @@ Listener Keyboard([](Event msg)
     DEBUG_TRACE("  ");
     //Print("KeyDown");
 });
-
-
 
 template<typename T>
 struct PersistantShaderBufferObject
@@ -236,6 +235,32 @@ private:
 //#include"ECScomponent.h"
 //#include"ECSsystem.h"
 //
+
+
+#define RENDER_SHADOWS
+#ifdef RENDER_SHADOWS
+#    define USE_LIGHTING
+#endif
+
+
+void TestThreadPoolFunctionP0R0()
+{
+	Print("Thread Pool Test no Params no Return \n");
+}
+void TestThreadPoolFunctionP1R0(int _in)
+{
+	Print("Thread Pool Test One Params = " << _in << " and has no Return \n");
+}
+int TestThreadPoolFunctionP1R1(int _in)
+{
+	int result = 10 * _in;
+	Print("Thread Pool Test One Params " << _in << " and has One Return which equals " << result << "\n");
+	return result;
+}
+
+#include"Texture.h"
+#include<utility>
+
 class MyApp : public Application
 {
 public:
@@ -260,6 +285,9 @@ public:
 	}
 
 	///------------Various unit testing--------------- 
+	DeferredRenderer* Ren;
+
+
 	Shader
 		*TestShader,
         *SpriteShader;
@@ -298,18 +326,15 @@ public:
 
  //   EntityComponentSystem *TestECS;
  //   SystemList MainSystems;
-
   //  COMPONENT(MovementComponent)
   //  {
   //      Vec3 Velocity;
   //      Vec3 Acceleration;
   //  };
-    
   //  COMPONENT(PositionComponent) 
   //  {
   //      Vec3 Position;
   //  };
-   
 //  struct MovementSystem
 //        :
 //        public BaseSystem
@@ -324,7 +349,6 @@ public:
 //            SystemName = (typeid(this).name());
 //#endif
 //        }
-
 //        virtual void UpdateComponents(float _delta, BaseComponent** _components)
 //        {
 //            PositionComponent* Pos = (PositionComponent*)_components[0];
@@ -345,6 +369,23 @@ public:
     
 	void OnCreate()
 	{
+#ifdef WORKINGONLFRINGBUFFER
+		lfRingBuffer<100> RBuffer;
+	
+
+        for_loop(i, 100)
+        {
+        	//RBuffer.Push(&TestThreadPoolFunctionP0R0);   
+			RBuffer.Async(TestThreadPoolFunctionP0R0);
+
+        }
+        for_loop(i, 100)
+        {
+			Worker_Function Func;
+        	RBuffer.Pop(Func);
+        	Func();
+        }
+#endif
 		TestShader = new Shader("Resources\\Shaders\\BasicShader.sfx");
         SpriteShader = new Shader("Resources\\Shaders\\Sprite.sfx");
 
@@ -369,14 +410,104 @@ public:
         }
         SpriteShader->Disable();
 
-
+		TODO("Changed the Model loader to stop placing file paths in there. ");
 		TestShader->Enable();
 
 		TestCamera = Camera3D(Vec3(0), Vec3(0)); // Create a Camera to view the Scene  
 		Viewport::SetCamera(&TestCamera);
-		TestShader->Enable(); //Scene("Resources\\home_sunda\\Material//home_sunda_final.blend"); //
-		TestScene = Scene("Resources\\SponzaFBX//sunda.fbx");		//Scene("Resources//TestScene//source//mp_toujane.fbx"); // "C:\\Users\\DELL\\source\\repos\\Mystic\\Mystic\\Resources\\SpaceScene\\Space Station Scene.dae"); //"Resources//Wolf//wolf_fbx.fbx");//
+		TestShader->Enable(); //Scene("Resources\\home_sunda\\Material//home_sunda_final.blend"); //"Resources\\Animation\\Princess//Princess.fbx"); //
+	
 
+
+		//    FrameBufferObject(int _width, int _height, GLenum _datatype = GL_FLOAT, GLenum _internal = GL_RGBA32F, GLenum _format = GL_RGBA);
+		/*
+			// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+	glGenFramebuffers(1, &FrameBufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+
+	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+
+	glGenTextures(1, &DepthTexture);
+	glBindTexture(GL_TEXTURE_2D, DepthTexture);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 4096, 4096, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+
+////////////////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+////////////////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+////////////////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+////////////////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //GL_CLAMP?
+////////////////[=            FrameBuffer Creation                                      =]
+////////////////[= glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);   =]
+////////////////[= glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);   =]
+////////////////[= glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); =]
+////////////////[= glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); =]
+
+
+ 
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, DepthTexture, 0);
+ 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, DepthTexture, 0);
+
+	TODO("Fix this to take in a Texture instead of creating the Texture here so I can have Handle access");
+
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+	glGenFramebuffers(1, &FrameBufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+
+	glGenTextures(1, &TextureID);
+	glBindTexture(GL_TEXTURE_2D, TextureID);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, Width, Height, 0, GL_RGBA, GL_FLOAT, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureID, 0);
+
+	glGenTextures(1, &DepthTexture);
+	glBindTexture(GL_TEXTURE_2D, DepthTexture);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, Width, Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	ValidateFrameBuffer();
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		*/
+//std::pair<Texture&, AttachmentPoint_t> _attachments);
+		//	GLenum Format = GL_RGB, GLenum _wrapMode = GL_REPEAT, GLenum _filtering = GL_LINEAR, GLenum _internalFormat = GL_RGB);
+		//Texture* depth = ;
+
+#ifdef _DEFERRED_RENDER
+
+		Ren = new DeferredRenderer("Resources\\SponzaFBX//Sponza3.fbx");
+		Ren->CreateRenderPass
+		(
+			FrameBufferObject
+			(
+				{
+					*(new Texture(4096, 4096, GL_DEPTH_COMPONENT)),//*depth,
+					AttachmentPoint_t::DEPTH_ATTACHMENT
+				}
+			),
+			new Shader("Resources\\Shaders\\Shadow.sfx")
+		);
+
+
+#else
+        TestScene = Scene("Resources/Head.fbx");// /Scene("Resources\\SponzaFBX//Sponza3.fbx");		
+		/* Other Files...
+		Scene("Resources//TestScene//source//mp_toujane.fbx"); 
+		 "C:\\Users\\DELL\\source\\repos\\Mystic\\Mystic\\Resources\\SpaceScene\\Space Station Scene.dae"); 
+		"Resources//Wolf//wolf_fbx.fbx");
+		
+		*/
+#endif
+	// "Resources\\Animation\\sylvanas//sylvanas.fbx");// //
 		TestLight = Light(Vec3(0)); TestLight.Color = fRGB(.90f, .95f, 1.00f);
 
         Shadows = std::make_unique<ShadowMap>();
@@ -395,68 +526,82 @@ public:
      //   TestECS->UpdateSystems(MainSystems, 0.1f);
 	}
 
+
 ///==================================================================================================================================================
 ///==                     RENDERING
 ///==================================================================================================================================================
 	
 	void OnRender()
 	{
-		Print(ExtractPosition(TestCamera.GetViewMatrix()));
+	//	Print(ExtractPosition(TestCamera.GetViewMatrix()));
 		Angle += .051f;
 #if 1
-		Shadows->Bind();
-		{// Shadow Pass
-			Shadows->Render(TestLight.Position);
-			TestScene.Render(*Shadows->Program);
-		}
-		Shadows->Unbind();
+#ifdef RENDER_SHADOWS
+	Shadows->Bind();
+	{// Shadow Pass
+		Shadows->Render(TestLight.Position);
+		TestScene.Render(*Shadows->Program);
+	}
+	Shadows->Unbind();
+#endif
+
+	
 
  	  	TestShader->Enable();
 		{// Scene Pass
             TestShader->SetTextureUniform("ShadowMap", Shadows->DepthTextureHandle);
 
-			TestLight.SetPosition( Vec3(152 + (float)sin(RADIANS(Angle)) * 4000, 54 + 12000, 102 + ((float)cos(RADIANS(Angle)) * 4000)));
+		 	TestLight.SetPosition( Vec3(152 + (float)sin(RADIANS(Angle)) * 4000, 54 + 600, 102 + ((float)cos(RADIANS(Angle)) * 4000)));
             TestCamera.Bind(TestShader);
 
 
- 			TestLight.Bind(*TestShader);
+ 		 	TestLight.Bind(*TestShader);
             ///------------ Set Shader Uniform Block --------------------------------------
 
-		//	LightUBO->Data.Position = Vec4(TestLight.Position, 1.0);
-		//	LightUBO->Data.Color = Vec4(TestLight.Color, 1.0);
+//		 	LightUBO->Data.Position = Vec4(TestLight.Position, 1.0);
+//		 	LightUBO->Data.Color = Vec4(TestLight.Color, 1.0);
 
 
 			TestUBO->Data.Projection = TestCamera.ProjectionMatrix;
 			TestUBO->Data.View = TestCamera.ViewMatrix;
 
 
-			TestShader->SetUniform("DepthMatrix", Mat4(
-				0.5, 0.0, 0.0, 0.0,
-				0.0, 0.5, 0.0, 0.0,
-				0.0, 0.0, 0.5, 0.0,
-				0.5, 0.5, 0.5, 1.0
-			) * Shadows->GetDepthMatrix());
+		 	TestShader->SetUniform("DepthMatrix", Mat4(
+		 		0.5, 0.0, 0.0, 0.0,
+		 		0.0, 0.5, 0.0, 0.0,
+		 		0.0, 0.0, 0.5, 0.0,
+		 		0.5, 0.5, 0.5, 1.0
+		 	) * Shadows->GetDepthMatrix());
 
 			TestUBO->Data.EyePosition = TestCamera.Position;
 			TestUBO->Update(); 
-          //  LightUBO->Update();
+ //            LightUBO->Update();
             ///----------------------------------------------------------------------------
 
-            TestScene.Render(*TestShader);
-            TestUBO->LockBuffer();
-          //  LightUBO->LockBuffer();
-		}
-        TestShader->Disable();
+#ifdef _DEFERRED_RENDER
+			Ren->Render(*TestShader);
+#else   
+			TestScene.Render(*TestShader);
 #endif
+            TestUBO->LockBuffer();
+	//		LightUBO->LockBuffer();
+
+		}
+		TestShader->Disable();
+#endif
+
+
+#ifdef RENDER_SPRITES
 		SpriteShader->Enable();
 		{
 			TestSprite->Render(*SpriteShader);
 		}
 		SpriteShader->Disable();
-     //    DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
+#endif 
+		//    DQuad->Render(TestSprite->SpriteSheet->Handle);//Shadows->DepthTextureHandle); 
 	}
 
-   float Angle = 0; /// Just a variable to move the Lighting around and not terribly important
+	float Angle = 0; /// Just a variable to move the Lighting around and not terribly important
 };
 
 
@@ -468,15 +613,82 @@ public:
            //    0.5, 0.5, 0.5, 1.0
            //) * Shadows->GetDepthMatrix();
 #include"Native.h"
+
+
+template<typename F>
+struct Wrapper : F
+{
+	Wrapper(F&& _func) : F{ std::move(_func) }
+	{}
+	void execute()
+	{
+		(*this)();
+	}
+};
+
+void P0R0()
+{
+	Print("P0R0");
+}
+int P0R1()
+{
+	Print("P0R1");
+	return 42;
+}
+
+void P1R0(int _param)
+{
+	Print("P1R0:" << _param);
+}
+float P1R1(int _param)
+{
+	Print("P1R1: " << _param);
+	return _param * _param;
+}
+
 int main()
 {
-     TODO("SSBO Class Incomplete. Data is not sent from the GPU back to the CPU but then again I have not really tried so...");
-     NativeMemory::GlobalMemState.GetMemState();
-	 MyApp App;
-	 App.Start(); 
-	 App.Run(); // Entry point Line 66 in Application.cpp
-	 App.End();
-     NativeMemory::GlobalMemState.CheckMemory();
+//   Wrapper A(P0R0);
+//   Wrapper B(P0R1);
+//   Wrapper C(P1R0);
+//   Wrapper D(P1R1);
+//   
+//   
+//   A.execute();
+//   B.execute();
+//   C.execute();
+//   D.execute();
+
+//	TODO("Ended on attempts at making the most basic of wrapper in which a base class that can be placed into a queue implements all forms of function type in templated versions of the derived type so that pointer to the base is all I need stored then dynamically or otherwise I can dispatch to the funciton desired \n I need to also store a parameter pack to simulate something like std::bind");
+//	D ba(TestThreadPoolFunctionP0R0);
+//	ba(TestThreadPoolFunctionP0R0);
+	//lfQueue<int> Q;
+
+	//Q.push(1);	
+	//Q.push(2);	Q.push(3);	Q.push(4);
+//	std::vector<Task<void()>> TARRAY;
+//
+//	Task<void()>  TASK(TestThreadPoolFunctionP0R0);
+//	TARRAY.push_back(TestThreadPoolFunctionP0R0);
+//	TARRAY.push_back((Task<void()>)(TestThreadPoolFunctionP1R0,10));
+//	//	TASK = ;
+//	TASK();
+//	TARRAY[0]();
+	//Task<void(int)>  TASK2;
+	//TASK2 = TestThreadPoolFunctionP1R0;
+//	TASK2(10);
+////
+
+	//Task TASK2(TestThreadPoolFunctionP1R0,10);
+	//TASK();
+	//TASK2(10);
+	TODO("SSBO Class Incomplete. Data is not sent from the GPU back to the CPU but then again I have not really tried so...");
+	NativeMemory::GlobalMemState.GetMemState();
+	MyApp App;
+	App.Start();
+	App.Run(); // Entry point Line 66 in Application.cpp
+	App.End();
+	NativeMemory::GlobalMemState.CheckMemory();
 }
 
 

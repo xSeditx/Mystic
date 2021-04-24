@@ -20,6 +20,14 @@ Texture::Texture(Bitmap &_image)
 	glGenTextures(1, &TextureID);
     Load();
 }
+Texture::Texture(uint32_t _width, uint32_t _height, GLenum _type, GLenum Format , GLenum _wrapMode , GLenum _filtering , GLenum _internalFormat)
+{
+	SetFiltering(_filtering);
+	SetWrap(_wrapMode); // Texture Layout when sampling past texture
+}
+
+
+
 Texture::Texture(Bitmap &_image, int _x, int _y, int _width, int _height)
 {// Generate a Texture from a Sub Image 
 	Picture = new Bitmap();
@@ -66,7 +74,6 @@ Texture::Texture(Bitmap &_image, int _x, int _y, int _width, int _height)
         Counter++;
     }
     Picture->Data = TempImage;
-
 
     *Picture = Bitmap::FlippedImage(*Picture);
 
@@ -135,7 +142,6 @@ void Texture::SetWrap(unsigned int param)
 void Texture::SetWrapX(unsigned int param)
 {
 	glTexParameteri(Target, GL_TEXTURE_WRAP_S, param);
-
 }
 void Texture::SetWrapY(unsigned int param)
 {

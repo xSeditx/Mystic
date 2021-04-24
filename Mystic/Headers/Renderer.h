@@ -195,10 +195,48 @@ public:
 //	std::vector<FrameBufferObject> RenderTargets;
 //	std::vector<Pass> RenderPass;
 //};
-//
+////const Mesh& _mesh, Material& _material);
 #include<map>
+#include"Lights.h"
 
 class Camera3D;
+class FrameBufferObject;
+class DeferredRenderer;
+
+struct RenderPass
+{
+	RenderPass(DeferredRenderer* _render, FrameBufferObject& _fbo ,Shader* _shader);
+	FrameBufferObject FrameBuffer;
+	std::vector<std::vector<uint32_t>> MaterialGroups;
+	void Submit(uint32_t _meshID, uint32_t _materialID);
+
+	DeferredRenderer* ParentRenderer;
+	Shader* DefaultShader;
+};
+
+
+class DeferredRenderer
+{
+public:
+
+	DeferredRenderer(std::string file);
+	// Vector of Material/ Vector of Mesh Pairs
+	Camera3D* Camera = nullptr;
+	Mat4 Transform;/// Needed?
+	FrameBufferObject GBuffer;
+
+	std::vector<Light> Lights;
+	std::vector<Mesh> Meshes;
+	std::vector<Material> Materials;
+	std::vector<RenderPass> Passes;//std::pair<FrameBufferObject,Shader*>
+
+	std::string Filepath;
+
+	void CreateRenderPass(FrameBufferObject& _fbo, Shader* _shader);
+	void Render(Shader& _shader);
+	void Update();
+};
+
 
 
 class Scene
@@ -221,8 +259,8 @@ public:
 
 
 	void Attach(Camera3D *_cam) { Camera = _cam; }
-	void Attach(Mesh _mesh) { Meshes.push_back(_mesh); }
-	void Attach(Material _mat) { Materials.push_back(_mat); }
+	void Attach(Mesh& _mesh);
+	void Attach(Material& _mat);
 
 	Mat4 Transform;
 	/// Design this to perform Async updates on all mesh objects prior to rendering. 
@@ -246,11 +284,11 @@ public:
 };
 
 
-struct RenderPass
-{
-	FrameBufferObject FBO;
-	Shader *Program;
-};
+//struct RenderPass
+//{
+//	FrameBufferObject FBO;
+//	Shader *Program;
+//};
 class MYSTIC Renderer
 {
 public: 

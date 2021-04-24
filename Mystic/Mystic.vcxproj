@@ -28,13 +28,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -99,6 +99,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <CallingConvention>StdCall</CallingConvention>
       <MinimalRebuild>true</MinimalRebuild>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>
@@ -143,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Animation.h" />
     <ClInclude Include="Headers\ECS.h" />
     <ClInclude Include="Headers\ECScomponent.h" />
     <ClInclude Include="Headers\ECSsystem.h" />
@@ -237,6 +239,7 @@
     <None Include="Resources\Shaders\LightShader.sfx" />
     <None Include="Resources\Shaders\Preblur.sfx" />
     <None Include="Resources\Shaders\Shadow.sfx" />
+    <None Include="Resources\Shaders\Simple.sfx" />
     <None Include="Resources\Shaders\Skybox.sfx" />
     <None Include="Resources\Shaders\Sprite.sfx" />
   </ItemGroup>

@@ -151,8 +151,22 @@ void VertexArrayObject::Render()
     Bind();
     _GL(glDrawElements(GL_TRIANGLES, ElementCount, GL_UNSIGNED_INT, nullptr));
 }
+#include"Texture.h"
+FrameBufferObject::FrameBufferObject(std::pair<Texture&, AttachmentPoint_t> _attachments)
+{
+	glGenFramebuffers(1, &FrameBufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, FrameBufferID);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, _attachments.second, _attachments.first.Target, _attachments.first.Handle, 0);//0 is mipmap level
 
+	glDrawBuffer(DrawBuffer);// 
+	glReadBuffer(ReadBuffer);
 
+	ValidateFrameBuffer();
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+}
 
 FrameBufferObject::FrameBufferObject(int _width, int _height, GLenum _datatype , GLenum _internal, GLenum _format)
     :
@@ -245,3 +259,28 @@ void FrameBufferObject::ValidateFrameBuffer()
 
 }
  
+
+
+
+
+
+//	glGenTextures(1, &TextureID);
+//	glBindTexture(_attachments.first.Target, TextureID);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+//  glTexImage2D(_attachments.first.Target, 0, GL_RGBA32F, Width, Height, 0, GL_RGBA, GL_FLOAT, 0);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureID, 0);
+
+//  glGenTextures(1, &DepthTexture);
+//  glBindTexture(_attachments.first.Target, DepthTexture);
+//  //glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+//  glTexImage2D(_attachments.first.Target, 0, _attachments.first.Type, Width, Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//  glTexParameteri(_attachments.first.Target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+

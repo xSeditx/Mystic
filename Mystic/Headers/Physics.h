@@ -20,7 +20,7 @@ now this section lays here like a Zombie till I decide what to do with it.
 #pragma comment(lib ,"LinearMath_Debug.lib")
 #pragma comment(lib ,"BulletCollision_Debug.lib")
 
-#include"btBulletDynamicsCommon.h"
+//#include"btBulletDynamicsCommon.h"
 
 #include"Gameobject.h"
 #include"Common.h"

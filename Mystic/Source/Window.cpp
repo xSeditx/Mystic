@@ -39,8 +39,8 @@ Window::Window(int x, int y, int w, int h, std::string title)
 	}
 	gladLoadGL();
 
-    glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+//    glEnable(GL_CULL_FACE);
+//	glCullFace(GL_BACK);
 ///	glfwSwapInterval(60);
 	// --------------- Initialize Matrices ----------------------------------------------------
 	glShadeModel(GL_SMOOTH);

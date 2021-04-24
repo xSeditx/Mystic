@@ -182,8 +182,8 @@ public:
 	void Bind(Shader &_shader) override;
 	void Render(Shader &_shader);
 
-	void Unbind() override;
-	void Update() override;
+ 	void Unbind() override;
+ 	void Update() override;
 
 };
 

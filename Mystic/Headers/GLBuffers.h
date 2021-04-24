@@ -304,11 +304,50 @@ public:
     void Render();
 };
 
+enum AttachmentPoint_t
+{
+	COLOR_ATTACHMENT_0 = GL_COLOR_ATTACHMENT0, // These are an implementation - dependent number of attachment points.You can query GL_MAX_COLOR_ATTACHMENTS to determine the number of color attachments that an implementation will allow.The minimum value for this is 8, so you are guaranteed to be able to have at least color attachments 0 - 7. These attachment points can only have Images bound to them with color - renderable formats.All compressed Image formats are not color - renderable, and thus cannot be attached to an FBO.
+	COLOR_ATTACHMENT_1 = GL_COLOR_ATTACHMENT1,
+	COLOR_ATTACHMENT_2 = GL_COLOR_ATTACHMENT2,
+	COLOR_ATTACHMENT_3 = GL_COLOR_ATTACHMENT3,
+	COLOR_ATTACHMENT_4 = GL_COLOR_ATTACHMENT4,
+	COLOR_ATTACHMENT_5 = GL_COLOR_ATTACHMENT5,
+	COLOR_ATTACHMENT_6 = GL_COLOR_ATTACHMENT6,
+	COLOR_ATTACHMENT_7 = GL_COLOR_ATTACHMENT7,
+	COLOR_ATTACHMENT_10 = GL_COLOR_ATTACHMENT10,
+	COLOR_ATTACHMENT_11 = GL_COLOR_ATTACHMENT11,
+	COLOR_ATTACHMENT_12 = GL_COLOR_ATTACHMENT12,
+	COLOR_ATTACHMENT_13 = GL_COLOR_ATTACHMENT13,
+	COLOR_ATTACHMENT_14 = GL_COLOR_ATTACHMENT14,
+	COLOR_ATTACHMENT_15 = GL_COLOR_ATTACHMENT15,
+	COLOR_ATTACHMENT_16 = GL_COLOR_ATTACHMENT16,
+	COLOR_ATTACHMENT_17 = GL_COLOR_ATTACHMENT17,
+	COLOR_ATTACHMENT_18 = GL_COLOR_ATTACHMENT18,
+	COLOR_ATTACHMENT_19 = GL_COLOR_ATTACHMENT19,
+	COLOR_ATTACHMENT_20 = GL_COLOR_ATTACHMENT20,
+	COLOR_ATTACHMENT_21 = GL_COLOR_ATTACHMENT21,
+	COLOR_ATTACHMENT_22 = GL_COLOR_ATTACHMENT22,
+	COLOR_ATTACHMENT_23 = GL_COLOR_ATTACHMENT23,
+	COLOR_ATTACHMENT_24 = GL_COLOR_ATTACHMENT24,
+	COLOR_ATTACHMENT_25 = GL_COLOR_ATTACHMENT25,
+	COLOR_ATTACHMENT_26 = GL_COLOR_ATTACHMENT26,
+	COLOR_ATTACHMENT_27 = GL_COLOR_ATTACHMENT27,
+	COLOR_ATTACHMENT_28 = GL_COLOR_ATTACHMENT28,
+	COLOR_ATTACHMENT_29 = GL_COLOR_ATTACHMENT29,
+	COLOR_ATTACHMENT_30 = GL_COLOR_ATTACHMENT30,
+	COLOR_ATTACHMENT_31 = GL_COLOR_ATTACHMENT31,
+	DEPTH_ATTACHMENT = GL_DEPTH_ATTACHMENT,//GL_DEPTH_ATTACHMENT : This attachment point can only have Images with depth formats bound to it.The Image attached becomes the Depth Buffer for the FBO. **NOTE** Even if you don't plan on reading from this depth_attachment, an off screen buffer that will be rendered to should have a depth attachment.
+	STENCIL_ATTACHMENT = GL_STENCIL_ATTACHMENT,// This attachment point can only have Images with stencil formats bound to it.The Image attached becomes the stencil buffer for the FBO.
+	DEPTH_STENCIL_ATTACHMENT = GL_DEPTH_STENCIL_ATTACHMENT// This is shorthand for "both depth and stencil".The Image attached becomes both the depth and stencil buffers. Note : If you use GL_DEPTH_STENCIL_ATTACHMENT, you should use a packed depth - stencil internal format for the texture or renderbuffer you are attaching.
+};
 
 class MYSTIC FrameBufferObject
 {
 public:
-	FrameBufferObject() = default;
+
+
+ 	FrameBufferObject() = default;
+	FrameBufferObject(std::pair<Texture&, AttachmentPoint_t> _attachments);
     FrameBufferObject(int _width, int _height, GLenum _datatype = GL_FLOAT, GLenum _internal = GL_RGBA32F, GLenum _format = GL_RGBA);
 
 	Vec2 Size;
@@ -323,47 +362,14 @@ public:
 
     void Bind();
     void Unbind();
-    void ValidateFrameBuffer();
+	void ValidateFrameBuffer();
 
-	enum AttachmentPoint_t
-	{
-		COLOR = GL_COLOR_ATTACHMENT0, // These are an implementation - dependent number of attachment points.You can query GL_MAX_COLOR_ATTACHMENTS to determine the number of color attachments that an implementation will allow.The minimum value for this is 8, so you are guaranteed to be able to have at least color attachments 0 - 7. These attachment points can only have Images bound to them with color - renderable formats.All compressed Image formats are not color - renderable, and thus cannot be attached to an FBO.
-		COLOR1 = GL_COLOR_ATTACHMENT1,
-		COLOR2 = GL_COLOR_ATTACHMENT2,
-		COLOR3 = GL_COLOR_ATTACHMENT3,
-		COLOR4 = GL_COLOR_ATTACHMENT4,
-		COLOR5 = GL_COLOR_ATTACHMENT5,
-		COLOR6 = GL_COLOR_ATTACHMENT6,
-		COLOR7 = GL_COLOR_ATTACHMENT7,
-		COLOR10 = GL_COLOR_ATTACHMENT10,
-		COLOR11 = GL_COLOR_ATTACHMENT11,
-		COLOR12 = GL_COLOR_ATTACHMENT12,
-		COLOR13 = GL_COLOR_ATTACHMENT13,
-		COLOR14 = GL_COLOR_ATTACHMENT14,
-		COLOR15 = GL_COLOR_ATTACHMENT15,
-		COLOR16 = GL_COLOR_ATTACHMENT16,
-		COLOR17 = GL_COLOR_ATTACHMENT17,
-		COLOR18 = GL_COLOR_ATTACHMENT18,
-		COLOR19 = GL_COLOR_ATTACHMENT19,
-		COLOR20 = GL_COLOR_ATTACHMENT20,
-		COLOR21 = GL_COLOR_ATTACHMENT21,
-		COLOR22 = GL_COLOR_ATTACHMENT22,
-		COLOR23 = GL_COLOR_ATTACHMENT23,
-		COLOR24 = GL_COLOR_ATTACHMENT24,
-		COLOR25 = GL_COLOR_ATTACHMENT25,
-		COLOR26 = GL_COLOR_ATTACHMENT26,
-		COLOR27 = GL_COLOR_ATTACHMENT27,
-		COLOR28 = GL_COLOR_ATTACHMENT28,
-		COLOR29 = GL_COLOR_ATTACHMENT29,
-		COLOR30 = GL_COLOR_ATTACHMENT30,
-		COLOR31 = GL_COLOR_ATTACHMENT31,
-		DEPTH = GL_DEPTH_ATTACHMENT,//GL_DEPTH_ATTACHMENT : This attachment point can only have Images with depth formats bound to it.The Image attached becomes the Depth Buffer for the FBO. **NOTE** Even if you don't plan on reading from this depth_attachment, an off screen buffer that will be rendered to should have a depth attachment.
-		STENCIL = GL_STENCIL_ATTACHMENT,// This attachment point can only have Images with stencil formats bound to it.The Image attached becomes the stencil buffer for the FBO.
-		DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT// This is shorthand for "both depth and stencil".The Image attached becomes both the depth and stencil buffers. Note : If you use GL_DEPTH_STENCIL_ATTACHMENT, you should use a packed depth - stencil internal format for the texture or renderbuffer you are attaching.
-	};
+	// GL_NONE,GL_FRONT_LEFT,GL_FRONT_RIGHT,GL_BACK_LEFT,GL_BACK_RIGHT,GL_FRONT,GL_BACK,GL_LEFT,GL_RIGHT,GL_FRONT_AND_BACK
+	GLenum DrawBuffer = GL_NONE;
+	GLenum ReadBuffer = GL_NONE;
+
 	AttachmentPoint_t Attachments[10];
 };
-
 
 template<typename T>
 struct MYSTIC UniformBufferObject

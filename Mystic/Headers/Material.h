@@ -7,7 +7,7 @@
 #include"Assimp.h"
 #include"Texture.h"
 
-
+#define _BINDLESS_
 /*==============================================================================================================================================================
 														MATERIAL CLASS
 				Contains the surface Color, Vertex Colors, per Object shader if applicable
@@ -32,6 +32,7 @@ struct ColorMaterial
 	}Index;
 
 	ColorMaterial() = default;
+
 	ColorMaterial
 	(
 		Vec4 _Diffuse,
@@ -174,25 +175,4 @@ struct Material
 	void Bind();
 	void AddBinaryProperty(const void *pInput, unsigned int pSizeInBytes, const char *pKey, unsigned int type, unsigned int index, aiPropertyTypeInfo pType);
 	void AddProperty(const aiString *pInput, const char *pKey, unsigned int type = 0, unsigned int index = 0);
-///	void AddProperty(const TYPE *pInput, unsigned int pNumValues, const char *pKey, unsigned int type = 0, unsigned int index = 0);
 };
-
-
-/// aiMaterial()	aiMaterial
-/// Clear()	aiMaterial
-/// CopyPropertyList(aiMaterial *pcDest, const aiMaterial *pcSrc)	aiMaterial	static
-/// Get(const char *pKey, unsigned int type, unsigned int idx, Type *pOut, unsigned int *pMax) const	aiMaterial
-/// Get(const char *pKey, unsigned int type, unsigned int idx, Type &pOut) const	aiMaterial
-/// GetTexture(aiTextureType type, unsigned int index, aiString *path, aiTextureMapping *mapping = NULL, unsigned int *uvindex = NULL, float *blend = NULL, aiTextureOp *op = NULL, aiTextureMapMode *mapmode = NULL) const	aiMaterial
-/// GetTextureCount(aiTextureType type) const	aiMaterial
-/// mNumAllocated	aiMaterial
-/// mNumProperties	aiMaterial
-/// mProperties	aiMaterial
-/// RemoveProperty(const char *pKey, unsigned int type = 0, unsigned int index = 0)	aiMaterial
-/// ~aiMaterial()	aiMaterial
-
-
-
-///Material* BrickMaterial();
-///Material* StoneMaterial();
-///Material* MoonMaterial();

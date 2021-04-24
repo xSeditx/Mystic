@@ -156,6 +156,9 @@
     <ClInclude Include="Headers\FileIO.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Animation.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -313,6 +316,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.sfx">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Simple.sfx">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

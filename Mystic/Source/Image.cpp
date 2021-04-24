@@ -11,7 +11,7 @@ Bitmap::Bitmap(std::string file)
 	:
 	Filepath(file)
 {
-	Data = SOIL_load_image(Filepath.c_str(), &Size.x, &Size.y, &Channels, SOIL_LOAD_AUTO);
+	Data = SOIL_load_image( Filepath.c_str(), &Size.x, &Size.y, &Channels, SOIL_LOAD_AUTO);
 
 	if (Data == nullptr)
 	{

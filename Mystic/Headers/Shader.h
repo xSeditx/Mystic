@@ -42,6 +42,16 @@ public:
 	GLuint g_ID(){	return GL_Handle;	}
 
 
+	void T()
+	{
+		if (ActiveShader.size())
+		{
+			Print("A");
+		}
+		else {
+			Print("B");
+		}
+	}
 	static GLuint  GetActiveID()     {  return (ActiveShader.size() > 0)  ? ActiveShader.top()->GL_Handle : 0;  }
 	static Shader* GetActiveShader() {  return (ActiveShader.size() <= 0) ? nullptr : ActiveShader.top();	    }
 
